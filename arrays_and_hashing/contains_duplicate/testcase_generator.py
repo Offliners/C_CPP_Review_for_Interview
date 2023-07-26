@@ -2,6 +2,8 @@ import os
 import random
 from config import cfg
 
+random.seed(cfg['seed'])
+
 def gen():
     num_lower = int(cfg['num_lower'])
     num_upper = int(cfg['num_upper'])
