@@ -2,6 +2,7 @@ import os
 import time
 import shutil
 import subprocess
+from resource import getrusage, RUSAGE_CHILDREN 
 from config import cfg
 
 def compare():
@@ -10,14 +11,16 @@ def compare():
     testcase_path = './testcase'
     for sol in sols:
         runtimes = []
+        memories = []
         sol_exec_path = f'./build/{sol}/{sol}'
         output_folder = f'{sol}_output'
         os.makedirs(output_folder, exist_ok=True)
         for i in range(num_testcase):
             start_time = time.time()
             p = subprocess.Popen(f'./{sol_exec_path} < {testcase_path}/{i}.in > {output_folder}/{i}.out', shell=True)
-            p.communicate()
+            p.wait()
             end_time = time.time()
+            memories.append(getrusage(RUSAGE_CHILDREN).ru_maxrss / 10**6 * 1024)
             runtimes.append(round((end_time - start_time) * 1000))
         
         print('\n{:^10s}{:^10s}{:^10s}'.format('Testcase', 'Result', 'Runtime'))
@@ -44,6 +47,7 @@ def compare():
         print('\n========={:^10s}========='.format('Result'))
         print('{:<9s}:   {:>3s} %'.format('AC Rate', str(round((1 - wa_count / num_testcase) * 100))))
         print('{:<9s}:   {:>3s} ms'.format('Runtime', str(round(sum(runtimes) / num_testcase))))
+        print('{:<9s}:   {:>3s} KB'.format('Memory', str(round(sum(memories) / num_testcase))))
         print('\n')
 
         shutil.rmtree(output_folder)
