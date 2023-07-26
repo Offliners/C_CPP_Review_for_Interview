@@ -7,10 +7,10 @@ cfg = {
 
     # length of nums
     'num_lower' : 1,
-    'num_upper' : 100000,
+    'num_upper' : 1e5,
 
     # boundary of nums[i]
-    'nums_lower' : -1e-9,
+    'nums_lower' : -1e9,
     'nums_upper' : 1e9,
 
     # testcase output path
