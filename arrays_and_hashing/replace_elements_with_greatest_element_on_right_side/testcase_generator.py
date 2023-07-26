@@ -24,13 +24,14 @@ def sol(in_path, out_path):
         for line in f.readlines():
             nums.append(int(line))
         
-        ans = []
-        for i in range(2):
-            for n in nums:
-                ans.append(n)
+        rightMax = -1
+        for i in range(len(nums) -1, -1, -1):
+            newMax = max(rightMax, nums[i])
+            nums[i] = rightMax
+            rightMax = newMax
         
     with open(out_path, 'w') as f:
-        for num in ans:
+        for num in nums:
             f.writelines(f'{num}\n')
 
 if __name__ == '__main__':
