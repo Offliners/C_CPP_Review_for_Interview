@@ -27,12 +27,12 @@ void my_array_append(myArr* arr, int data)
     arr->count++;
 }
 
-// Delete
-void my_array_delete(myArr* arr)
+// Remove
+void my_array_remove(myArr* arr)
 {
     if(my_array_is_empty(arr))
     {
-        printf("My array is empty, it can't delete any data!\n");
+        printf("My array is empty, it can't remove any data!\n");
         return;
     }
 
@@ -58,8 +58,22 @@ void my_array_insert(myArr* arr, int data, int index)
         arr->data[i + 1] = arr->data[i];
 
     arr->data[index] = data;
-    arr->count += 1;
-    return;
+    arr->count++;
+}
+
+// Delete
+void my_array_delete(myArr* arr, int index)
+{
+    if(my_array_is_empty(arr))
+    {
+        printf("My array is empty, it can't delete any data!\n");
+        return;
+    }
+
+    for(int i = index; i <= arr->count; ++i)
+        arr->data[i] = arr->data[i + 1];
+
+    arr->count--;
 }
 
 // Display

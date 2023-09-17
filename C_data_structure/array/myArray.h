@@ -12,11 +12,14 @@ void my_array_initialize(myArr* arr, int length);
 // Append
 void my_array_append(myArr* arr, int data);
 
-// Delete
-void my_array_delete(myArr* arr);
+// Remove
+void my_array_remove(myArr* arr);
 
 // Insert
 void my_array_insert(myArr* arr, int data, int index);
+
+// Delete
+void my_array_delete(myArr* arr, int index);
 
 // Display
 void my_array_display(myArr* arr);

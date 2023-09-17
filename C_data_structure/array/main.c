@@ -31,7 +31,7 @@ int main(void)
                 my_array_append(&arr, data);
                 break;
             case 2:
-                my_array_delete(&arr);
+                my_array_remove(&arr);
                 break;
             case 3:
                 printf("Please input the index: ");
@@ -41,13 +41,18 @@ int main(void)
                 my_array_insert(&arr, data, index);
                 break;
             case 4:
+                printf("Please input the index: ");
+                scanf("%d", &index);
+                my_array_delete(&arr, index);
+                break;
+            case 5:
                 printf("My array: ");
                 my_array_display(&arr);
                 break;
-            case 5:
+            case 6:
                 printf("%s", my_array_is_empty(&arr) ? "True, my array is empty!\n" : "False, my array is not empty!\n");
                 break;
-            case 6:
+            case 7:
                 printf("%s", my_array_is_full(&arr) ? "True, my array is full!\n" : "False, my array is not full!\n");
                 break;
             default:
@@ -64,10 +69,11 @@ void Menu()
     printf("====== Menu of My Array ======\n");
     printf("0. Exit\n");
     printf("1. Append\n");
-    printf("2. Delete\n");
+    printf("2. Remove\n");
     printf("3. Insert\n");
-    printf("4. Display\n");
-    printf("5. Check empty\n");
-    printf("6. Check full\n");
+    printf("4. Delete\n");
+    printf("5. Display\n");
+    printf("6. Check empty\n");
+    printf("7. Check full\n");
     printf("==============================\n");
 }
