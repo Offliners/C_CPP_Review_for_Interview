@@ -11,7 +11,7 @@ You can return the answer in any order.
 * Time complexity: $O(n^2)$
 * Space complexity: $O(1)$
 
-### Solution 2 - Sorting
+### Solution 2 - Hash Table
 * Time complexity: $O(n)$
 * Space complexity: $O(n)$
 
