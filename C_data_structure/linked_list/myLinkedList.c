@@ -41,6 +41,12 @@ void my_linked_list_remove(node* head)
         return;
     }
 
+    if(head->next == NULL)
+    {
+        head->data = -1;
+        return;
+    }
+
     for(node* current = head; current; current = current->next)
     {
         if(current->next->next == NULL)
