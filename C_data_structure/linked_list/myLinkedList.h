@@ -22,3 +22,6 @@ void my_linked_list_delete(node* head, int index);
 
 // Display
 void my_linked_list_display(node* head);
+
+// Is empty
+_Bool my_linked_list_is_empty(node* head);
