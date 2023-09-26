@@ -1,5 +1,5 @@
-#include <stdio.h>
-#include "myArray.h"
+#include<stdio.h>
+#include"myArray.h"
 
 void Menu();
 

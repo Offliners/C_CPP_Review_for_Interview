@@ -1,5 +1,5 @@
 #include<stdlib.h>
-#include "myArray.h"
+#include"myArray.h"
 
 // Initialize
 void my_array_initialize(myArr* arr, int length)
