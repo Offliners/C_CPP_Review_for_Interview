@@ -9,7 +9,7 @@ cfg = {
     'string_lower' : 1,
     'string_upper' : 1e4,
 
-    # PrProbability of space
+    # Probability of space
     'prob_of_space' : 0.35,
 
     # testcase output path
