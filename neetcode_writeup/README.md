@@ -11,3 +11,4 @@ Detail: [Link](https://neetcode.io/)
 |5|Is Subsequence|Easy|[link](./arrays_and_hashing/is_subsequence/is_subsequence.md)|
 |6|Length of Last Word|Easy|[link](./arrays_and_hashing/length_of_last_word/length_of_last_word.md)|
 |7|Two Sum|Easy|[link](./arrays_and_hashing/two_sum/two_sum.md)|
+|8|Longest Common Prefix|Easy|[link](./arrays_and_hashing/longest_common_prefix/longest_common_prefix.md)|
