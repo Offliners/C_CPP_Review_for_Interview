@@ -9,11 +9,11 @@ You can return the answer in any order.
 
 ### Solution 1 - Brute Force
 * Time complexity: $O(n^2)$
-* Space complexity: $O(1)$
+* Space complexity: $O(n^2)$
 
 ### Solution 2 - Hash Table
 * Time complexity: $O(n)$
-* Space complexity: $O(n)$
+* Space complexity: $O(n^2)$
 
 ## Usage
 ```shell
