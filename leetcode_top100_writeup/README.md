@@ -1,5 +1,5 @@
 # Leetcode - Top 100 Liked Questions
-Detail: [Link](https://leetcode.com/problem-list/top-100-liked-questions/)
+Detail: [Link](https://leetcode.com/problem-list/top-100-liked-questions/){:target="_blank" rel="noopener"}
 
 ## Outline
 |#|Title|Difficulty|Link|
