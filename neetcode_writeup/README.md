@@ -12,3 +12,5 @@ Detail: [Link](https://neetcode.io/)
 |6|Length of Last Word|Easy|[link](./length_of_last_word/length_of_last_word.md)|
 |7|Two Sum|Easy|[link](./two_sum/two_sum.md)|
 |8|Longest Common Prefix|Easy|[link](./longest_common_prefix/longest_common_prefix.md)|
+|9|Group Anagrams|Medium||
+|10|Pascal's Triangle|Easy|[link](./pascals_triangle/pascals_triangle.md)|
