@@ -14,3 +14,4 @@ Detail: [Link](https://neetcode.io/)
 |8|Longest Common Prefix|Easy|[link](./longest_common_prefix/longest_common_prefix.md)|
 |9|Group Anagrams|Medium||
 |10|Pascal's Triangle|Easy|[link](./pascals_triangle/pascals_triangle.md)|
+|11|Remove Element|Easy|[link](./remove_element/remove_element.md)|
