@@ -15,3 +15,4 @@ Detail: [Link](https://neetcode.io/)
 |9|Group Anagrams|Medium||
 |10|Pascal's Triangle|Easy|[link](./pascals_triangle/pascals_triangle.md)|
 |11|Remove Element|Easy|[link](./remove_element/remove_element.md)|
+|150|Add Two Numbers|Medium|[Link](./add_two_numbers/add_two_numbers.md)|
