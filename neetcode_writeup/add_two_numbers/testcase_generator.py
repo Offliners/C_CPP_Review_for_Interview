@@ -109,7 +109,7 @@ if __name__ == '__main__':
         with open(os.path.join(save_path, f'{i}.in'), 'w') as f:
             cases = gen()
             for case in cases:
-                data = [str(e) for e  in case]
+                data = [str(e) for e in case]
                 f.writelines(f'{" ".join(data)}\n')
 
         sol(os.path.join(save_path, f'{i}.in'), os.path.join(save_path, f'{i}.out'))
