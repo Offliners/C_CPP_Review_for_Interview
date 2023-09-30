@@ -5,7 +5,8 @@ Detail: [Link](https://leetcode.com/problem-list/top-100-liked-questions/)
 |#|Title|Difficulty|Link|
 |-|-|-|-|
 |1|Two Sum|Easy|[link](./two_sum/two_sum.md)|
-|2|Add Two Numbers|Medium|[Link](./add_two_numbers/add_two_numbers.md)|
+|2|Add Two Numbers|Medium|[link](./add_two_numbers/add_two_numbers.md)|
 |14|Longest Common Prefix|Easy|[link](./longest_common_prefix/longest_common_prefix.md)|
-|118|Pascal's Triangle|Easy|[Link](./pascals_triangle/pascals_triangle.md)|
-|206|Reverse Linked List|Easy|[Link](./reverse_linked_list/reverse_linked_list.md)|
+|21|Merge Two Sorted Lists|Easy|[link](./merge_two_sorted_lists/merge_two_sorted_lists.md)|
+|118|Pascal's Triangle|Easy|[link](./pascals_triangle/pascals_triangle.md)|
+|206|Reverse Linked List|Easy|[link](./reverse_linked_list/reverse_linked_list.md)|
