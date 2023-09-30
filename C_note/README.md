@@ -1,15 +1,5 @@
 # 常見 C 語言觀念題目總整理
 
-## Table of Content
-- [常見 C 語言觀念題目總整理](#---c----------)
-  * [Table of Content](#table-of-content)
-  * [一、指標](#----)
-    + [1. 基礎指標判讀](#1-------)
-    + [2. 指標與其他關鍵字混用](#2-----------)
-  * [二、call by value, call by reference](#--call-by-value--call-by-reference)
-  * [三、變數範圍和生命周期（關鍵字 static）](#----------------static-)
-  * [Reference](#reference)
-
 ## 一、指標
 指標 (pointer)：一個指向某個儲存位址的變數，語法為
 
@@ -79,14 +69,14 @@ C 語言之父明確表示 C 語言只有 call by value。坊間有 call by addr
 
 配置練習
 ```c
-int a=0;   //global 初始化區
-char *p1;  //global 未初始化區
+int a=0;                     //global 初始化區
+char *p1;                    //global 未初始化區
 main(){
-    int b;             // stack
-    char s[]="abc";    // stack
-    char *p2;          // stack
-    char *p3="123456"; // 123456\0 在常量區，p3在stack。
-    static int c=0;   // global (static) 初始化區
+    int b;                   // stack
+    char s[]="abc";          // stack
+    char *p2;                // stack
+    char *p3="123456";       // 123456\0 在常量區，p3在stack。
+    static int c=0;          // global (static) 初始化區
     p1 = (char*)malloc(10);
     p2 = (char*)malloc(20);  //分配得來得10和20位元組的區域在heap
     strcpy(p1,"123456");  
@@ -100,12 +90,46 @@ static int num_a;
 // 專屬於整個檔案的全域變數，其他檔案不能存取
 
 void func (int num_b) { // stack 區 
- int num_c; // stack 區
+    int num_c; // stack 區
 
- static int num_d; 
- //scope不變，只能在函數 func 內呼叫，但 lifetime 是整支程式執行的時間。
+    static int num_d; 
+    //scope不變，只能在函數 func 內呼叫，但 lifetime 是整支程式執行的時間。
 }
 ```
+
+## 四、關鍵字 const
+const 通常表示只可讀取不可寫入的變數，常用來宣告常數。使用 const 有以下好處：
+* 提升程式碼可讀性
+* 使編譯器保護那些不希望被改變的參數
+* 給優化器一些附加的資訊
+
+#### const vs #define
+1. 編譯器處理方式 : define 在預處理階段展開；const 在編譯階段使用。
+2. 類型和安全檢查 : const 會在編譯階段會執行類型檢查，define 則不會。
+3. 存儲方式 : define 直接展開不會分配記憶體，const 則會在記憶體中分配。
+
+## 五、關鍵字 volatile
+由於嵌入式系統常處理 I/O、中斷、即時操作系統 (RTOS) 相關的問題，因此在嵌入式系統開發中 volatile 尤為重要。被 volatile 修飾的變數代表它可能會被不預期的更新，因此告知編譯器不對它涉及的地方做最佳化，並在每次操作它的時候都讀取該變數實體位址上最新的值，而不是讀取暫存器的值。
+
+volatile 常見的應用：
+1. 修飾中斷處理程式中 (ISR) 中可能被修改的全域變數。
+2. 修飾多執行緒 (multi-threaded) 的全域變數。
+3. 設備的硬體暫存器 (如狀態暫存器)
+
+#### const 和 volatile 合用
+```c
+extern const volatile unsigned int rt_clock;
+```
+這是在 RTOS kernel 常見的一種宣告：rt_clock 通常是指系統時鐘，它經常被時鐘中斷進行更新。所以它是 volatile。因此在用的時候，要讓編譯器每次從記憶體裡面取值。而 rt_clock 通常只有一個寫者（時鐘中斷），其他地方對其的使用通常都是唯讀的。所以將其聲明為 const，表示這裏不應該修改這個變數。所以 volatile 和 const 是兩個不矛盾的東西，並且一個物件同時具備這兩種屬性也是有實際意義的
+
+## 六、關鍵字 inline
+inline 可以將修飾的函式設為行內函式，即像巨集 (define) 一樣將該函式展開編譯，用來加速執行速度。
+
+inline 和 #define 的差別在於：
+1. inline 函數只對參數進行一次計算，避免了部分巨集易產生的錯誤。
+2. inline 函數的參數類型被檢查，並進行必要的型態轉換。
+3. 巨集定義盡量不使用於複雜的函數
+4. 用 inline 後編譯器不一定會實作，僅為建議。
 
 ## Reference
 * Mr. Opengate - 常見 C 語言觀念題目總整理（適合考試和面試）: [Link](https://www.mropengate.com/2017/08/cc-c.html)
