@@ -44,7 +44,7 @@ def sol(in_path, out_path):
         data = f.readlines()
 
     data_1 = data[0].strip().split(' ')
-    if len(data_1) > 1:
+    if len(data_1) > 1 or data_1[0] != '':
         data_1 = [int(e) for e in data_1]
         i = 0
         list1 = ListNode()
@@ -57,10 +57,10 @@ def sol(in_path, out_path):
         val_1.val = data_1[-1] 
     else:
         data_1 = []
-        list1 = ListNode()
+        list1 = None
 
     data_2 = data[2].strip().split(' ')
-    if len(data_2) > 1:
+    if len(data_2) > 1 or data_2[0] != '':
         data_2 = [int(e) for e in data_2]
         i = 0
         list2 = ListNode()
@@ -73,7 +73,7 @@ def sol(in_path, out_path):
         val_2.val = data_2[-1] 
     else:
         data_2 = []
-        list2 = ListNode()
+        list2 = None
     
     dummy = node = ListNode()
 

@@ -50,7 +50,7 @@ def compare():
         print('{:<9s}:   {:>3s} KB'.format('Memory', str(round(sum(memories) / num_testcase))))
         print('\n')
 
-        shutil.rmtree(output_folder)
+        # shutil.rmtree(output_folder)
 
 if __name__ == '__main__':
     compare()
