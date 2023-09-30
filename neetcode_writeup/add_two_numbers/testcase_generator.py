@@ -9,6 +9,7 @@ def gen():
     node_upper = int(cfg['node_upper'])
     value_lower = int(cfg['value_lower'])
     value_upper = int(cfg['value_upper'])
+    sep_token = int(cfg['split_token'])
 
     len_link_list_1 = random.randint(node_lower, node_upper)
     len_link_list_2 = random.randint(node_lower, node_upper)
@@ -23,7 +24,7 @@ def gen():
             link_list_1.append(random.randint(1, value_upper))
 
     test_case.append(link_list_1)
-    test_case.append([-1])
+    test_case.append([sep_token])
 
     link_list_2 = []
     for _ in range(len_link_list_2):
@@ -33,7 +34,7 @@ def gen():
             link_list_2.append(random.randint(1, value_upper))
 
     test_case.append(link_list_2)
-    test_case.append([-1])
+    test_case.append([sep_token])
 
     return test_case
 

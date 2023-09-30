@@ -13,6 +13,9 @@ cfg = {
     'value_lower' : 0,
     'value_upper' : 9,
 
+    # Split two link lists token
+    'split_token' : -1,
+
     # testcase output path
     'save_path' : './testcase',
 

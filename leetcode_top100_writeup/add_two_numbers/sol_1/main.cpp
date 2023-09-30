@@ -1,5 +1,4 @@
 #include<iostream>
-#include<vector>
 
 using namespace std;
 
@@ -49,7 +48,6 @@ public:
 int main(void)
 {
     int data;
-    vector<int> num_1, num_2;
     ListNode *l1 = new ListNode();
     ListNode *val_1 = l1;
     ListNode *l2 = new ListNode();
@@ -59,54 +57,23 @@ int main(void)
 
     while(cin >> data)
     {
-        num_1.push_back(data);
-
         if(data == -1)
             break;
-    }
 
-    for(int i = 0; i < num_1.size(); ++i)
-    {
-        if(num_1[i + 1] == -1)
-        {
-            val_1->val = num_1[i];
-            val_1->next = NULL;
-            break;
-        }
-        else
-        {
-            val_1->val = num_1[i];
-            val_1->next = new ListNode();
-            val_1 = val_1->next;
-        }
+        val_1->next = new ListNode(data);
+        val_1 = val_1->next;
     }
 
     while(cin >> data)
     {
-        num_2.push_back(data);
-
         if(data == -1)
             break;
+
+        val_2->next = new ListNode(data);
+        val_2 = val_2->next;
     }
 
-    for(int i = 0; i < num_2.size(); ++i)
-    {
-
-        if(num_2[i + 1] == -1)
-        {
-            val_2->val = num_2[i];
-            val_2->next = NULL;
-            break;
-        }
-        else
-        {
-            val_2->val = num_2[i];
-            val_2->next = new ListNode();
-            val_2 = val_2->next;
-        }
-    }
-
-    ListNode *ans = sol.addTwoNumbers(l1, l2);
+    ListNode *ans = sol.addTwoNumbers(l1->next, l2->next);
     while(ans->next != NULL)
     {
         cout << ans->val << " ";

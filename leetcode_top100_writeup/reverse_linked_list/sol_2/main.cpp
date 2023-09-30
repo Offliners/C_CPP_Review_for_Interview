@@ -1,5 +1,4 @@
 #include<iostream>
-#include<vector>
 
 using namespace std;
 
@@ -28,32 +27,19 @@ public:
 
 int main(void)
 {
-    int n;
-    vector<int> nums;
-    ListNode *data = new ListNode();
+    int data;
+    ListNode *link_list = new ListNode();
+    ListNode *l = link_list;
 
     Solution sol;
 
-    while(cin >> n)
-        nums.push_back(n);
-
-    if(nums.size() > 0)
+    while(cin >> data)
     {
-        int i = 0;
-        ListNode *temp = data;
-        while(temp && i < nums.size() - 1)
-        {
-            temp->val = nums[i];
-            temp->next = new ListNode();
-            temp = temp->next;
-            ++i;
-        }
-        temp->val = nums[nums.size() - 1];
+        l->next = new ListNode(data);
+        l = l->next;
     }
-    else
-        data = NULL;
 
-    ListNode *ans = sol.reverseList(data);
+    ListNode *ans = sol.reverseList(link_list->next);
 
     if(!ans)
         return 0;
