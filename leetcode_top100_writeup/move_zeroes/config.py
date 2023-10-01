@@ -20,5 +20,5 @@ cfg = {
     'save_path' : './testcase',
 
     # solution methods
-    'sols' : ['sol_1']
+    'sols' : ['sol_1', 'sol_2']
 }
