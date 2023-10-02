@@ -13,9 +13,9 @@
 
 ## References
 #### Websites
-* Neetcode : https://neetcode.io/
-* Leetcode : https://leetcode.com/
-* Mr. Opengate : https://www.mropengate.com/
+* Neetcode: [link](https://neetcode.io/)
+* Leetcode: [link](https://leetcode.com/)
+* Mr. Opengate: [link](https://www.mropengate.com/)
 
 #### Textbooks
 * Understanding and Using C Pointers (ISBN: `1449344186`)
