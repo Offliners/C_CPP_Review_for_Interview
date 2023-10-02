@@ -7,6 +7,7 @@ Detail: [Link](https://leetcode.com/problem-list/top-100-liked-questions/)
 |1|Two Sum|Easy|[link](./two_sum/two_sum.md)|
 |2|Add Two Numbers|Medium|[link](./add_two_numbers/add_two_numbers.md)|
 |14|Longest Common Prefix|Easy|[link](./longest_common_prefix/longest_common_prefix.md)|
+|20|Valid Parentheses|Easy|[link](./valid_parentheses/valid_parentheses.md)|
 |21|Merge Two Sorted Lists|Easy|[link](./merge_two_sorted_lists/merge_two_sorted_lists.md)|
 |35|Search Insert Position|Easy|[link](./search_insert_position/search_insert_position.md)|
 |70|Climbing Stairs|Easy|[link](./climbing_stairs/climbing_stairs.md)|
