@@ -17,4 +17,5 @@
 * Mr. Opengate : https://www.mropengate.com/
 
 #### Textbooks
-* Understanding and Using C Pointers (ISBN : 1449344186)
+* Understanding and Using C Pointers (ISBN: `1449344186`)
+* Foundations of Algorithms, 5/e (ISBN: `1284049191`)
