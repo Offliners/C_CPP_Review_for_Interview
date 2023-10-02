@@ -2,8 +2,8 @@
 
 ## Outline
 ### C
-* [C語言 - 指標](./C_pointer/README.md)
-* [C語言 - 資料結構](./C_data_structure/README.md)
+* [C - 指標](./C_pointer/README.md)
+* [C - 資料結構](./C_data_structure/README.md)
 * [常見 C 語言觀念題目總整理](./C_note/README.md)
 
 ### C++
