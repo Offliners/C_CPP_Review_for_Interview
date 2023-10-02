@@ -7,8 +7,6 @@ class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
         vector<int> ans;
-
-        int flag = 0;
         for(int i = 0; i < nums.size(); ++i)
         {
             for(int j = 0; j < nums.size(); ++j)
@@ -29,15 +27,9 @@ public:
                         ans.push_back(i);
                     }
 
-                    flag = 1;
+                    return ans;
                 }
-
-                if(flag)
-                    break;
             }
-
-            if(flag)
-                break;
         }
 
         return ans;
