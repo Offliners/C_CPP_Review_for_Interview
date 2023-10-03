@@ -12,11 +12,11 @@ Detail: [Link](https://neetcode.io/)
 |6|Length of Last Word|Easy|[link](./length_of_last_word/length_of_last_word.md)|
 |7|Two Sum|Easy|[link](./two_sum/two_sum.md)|
 |8|Longest Common Prefix|Easy|[link](./longest_common_prefix/longest_common_prefix.md)|
-|9|Group Anagrams|Medium||
 |10|Pascal's Triangle|Easy|[link](./pascals_triangle/pascals_triangle.md)|
 |11|Remove Element|Easy|[link](./remove_element/remove_element.md)|
 |66|Move Zeroes|Easy|[link](./move_zeroes/move_zeroes.md)|
 |92|Valid Parentheses|Easy|[link](./valid_parentheses/valid_parentheses.md)|
+|111|Binary Search|Easy|[link](./binary_search/binary_search.md)|
 |112|Search Insert Position|Easy|[link](./search_insert_position/search_insert_position.md)|
 |129|Find First and Last Position of Element in Sorted Array|Medium|[link](./find_first_and_last_position_of_element_in_sorted_array/find_first_and_last_position_of_element_in_sorted_array.md)|
 |135|Reverse Linked List|Easy|[link](./reverse_linked_list/reverse_linked_list.md)|

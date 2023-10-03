@@ -16,3 +16,4 @@ Detail: [Link](https://leetcode.com/problem-list/top-100-liked-questions/)
 |118|Pascal's Triangle|Easy|[link](./pascals_triangle/pascals_triangle.md)|
 |206|Reverse Linked List|Easy|[link](./reverse_linked_list/reverse_linked_list.md)|
 |283|Move Zeroes|Easy|[link](./move_zeroes/move_zeroes.md)|
+|704|Binary Search|Easy|[link](./binary_search/binary_search.md)|
