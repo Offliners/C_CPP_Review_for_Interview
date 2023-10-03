@@ -18,6 +18,7 @@ Detail: [Link](https://neetcode.io/)
 |66|Move Zeroes|Easy|[link](./move_zeroes/move_zeroes.md)|
 |92|Valid Parentheses|Easy|[link](./valid_parentheses/valid_parentheses.md)|
 |112|Search Insert Position|Easy|[link](./search_insert_position/search_insert_position.md)|
+|129|Find First and Last Position of Element in Sorted Array|Medium|[link](./find_first_and_last_position_of_element_in_sorted_array/find_first_and_last_position_of_element_in_sorted_array.md)|
 |135|Reverse Linked List|Easy|[link](./reverse_linked_list/reverse_linked_list.md)|
 |136|Merge Two Sorted Lists|Easy|[link](./merge_two_sorted_lists/merge_two_sorted_lists.md)|
 |150|Add Two Numbers|Medium|[link](./add_two_numbers/add_two_numbers.md)|
