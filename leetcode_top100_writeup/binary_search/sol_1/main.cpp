@@ -24,8 +24,7 @@ int main(void)
     while(cin >> data)
         nums.push_back(data);
 
-    int ans =sol.search(nums, target);
-    cout << ans << endl;
+    cout << sol.search(nums, target) << endl;
 
     return 0;
 }
