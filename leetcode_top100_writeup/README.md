@@ -12,6 +12,7 @@ Detail: [Link](https://leetcode.com/problem-list/top-100-liked-questions/)
 |34|Find First and Last Position of Element in Sorted Array|Medium|[link](./find_first_and_last_position_of_element_in_sorted_array/find_first_and_last_position_of_element_in_sorted_array.md)|
 |35|Search Insert Position|Easy|[link](./search_insert_position/search_insert_position.md)|
 |48|Rotate Image|Medium|[link](./rotate_image/rotate_image.md)|
+|53|Maximum Subarray|Medium|[link](./maximum_subarray/maximum_subarray.md)|
 |70|Climbing Stairs|Easy|[link](./climbing_stairs/climbing_stairs.md)|
 |118|Pascal's Triangle|Easy|[link](./pascals_triangle/pascals_triangle.md)|
 |121|Best Time to Buy and Sell Stock|Easy|[link](./best_time_to_buy_and_sell_stock/best_time_to_buy_and_sell_stock.md)|
