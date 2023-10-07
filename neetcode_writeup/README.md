@@ -15,6 +15,7 @@ Detail: [Link](https://neetcode.io/)
 |10|Pascal's Triangle|Easy|[link](./pascals_triangle/pascals_triangle.md)|
 |11|Remove Element|Easy|[link](./remove_element/remove_element.md)|
 |52|Sign of the Product of an Array|Easy|[link](./sign_of_the_product_of_an_array/sign_of_the_product_of_an_array.md)|
+|64|Reverse String|Easy|[link](./reverse_string/reverse_string.md)
 |66|Move Zeroes|Easy|[link](./move_zeroes/move_zeroes.md)|
 |78|Best Time to Buy and Sell Stock|Easy|[link](./best_time_to_buy_and_sell_stock/best_time_to_buy_and_sell_stock.md)|
 |92|Valid Parentheses|Easy|[link](./valid_parentheses/valid_parentheses.md)|
