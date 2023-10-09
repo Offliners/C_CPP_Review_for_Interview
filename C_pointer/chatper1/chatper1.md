@@ -28,8 +28,8 @@
 
 ```c
 char *names[] = {"Miller","Jones","Anderson"};
-printf("%c\n",*(*(names+1)+2)); // 難懂
-printf("%c\n",names[1][2]);     // 易懂
+printf("%c\n",*(*(names+1)+2));  // 難懂
+printf("%c\n",names[1][2]);      // 易懂
 ```
 
 指標可能引發的問題:
@@ -39,3 +39,9 @@ printf("%c\n",names[1][2]);     // 易懂
 4. 在配置記憶體前解參考指標
 
 ### 宣告指標
+```c
+int num;  // 整數
+int *pi;  // 整數指標
+```
+
+![Figure 1-2](./Fig/Figure1-2.png)
