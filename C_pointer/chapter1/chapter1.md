@@ -45,3 +45,49 @@ int *pi;  // 整數指標
 ```
 
 ![Figure 1-2](./Fig/Figure1-2.png)
+
+以下宣告皆相同，空白取決於使用者的喜好
+
+```c
+int* pi;
+int * pi;
+int *pi;
+int*pi;
+```
+
+※ 雖然指標不需要初始化就能使用，但初始化才能確保有正確行為
+
+```c
+const int *pci;
+           ---- pci是個變數
+          ----- pci是個指標變數
+      --------- pci是個指向整數的指標變數
+--------------- pci是個指向整數常數的指標變數
+<-------------- 由後往前讀宣告 
+```
+
+### 位址運算子
+位址運算子&會回傳運算元的位址
+```c
+num = 0;     // num變數的數值設為0
+pi = &num;   // pi設定成指向num的位址
+
+
+int num;
+int *pi = &num;  // 也可以在宣告指標時就將pi指派為num的位址
+
+
+num = 0;
+pi = num;   // Error: invalid conversion from 'int' to 'int*'
+
+
+pi = (int*)num  // 利用轉型將整數指派給整數指標，執行時可能造成程式異常終止，因為程式可能解參考位址0
+
+
+// 盡早初始化指標是個好習慣
+int num;
+int *pi;
+pi = &num;
+```
+
+![Figure 1-3](./Fig/Figure1-3.png)
