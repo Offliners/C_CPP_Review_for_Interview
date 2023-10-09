@@ -3,6 +3,8 @@ Detail : [link](https://leetcode.com/problems/binary-tree-inorder-traversal/)
 
 Given the `root` of a binary tree, return the inorder traversal of its nodes' values.
 
+![inorder_1](./inorder_1.jpg)
+
 ### Solution 1 - Recursion
 * Time complexity: $O(n)$
 * Space complexity: $O(n)$
