@@ -91,3 +91,66 @@ pi = &num;
 ```
 
 ![Figure 1-3](./Fig/Figure1-3.png)
+
+### 顯示指標值
+```c
+int num = 0;
+int *pi = &num;
+printf("Address of num: %d Value: %d\n",&num, num);
+printf("Address of pi: %d Value: %d\n",&pi, pi);
+```
+
+輸出結果為
+```shell
+Address of num: 4520836 Value: 0
+Address of pi: 4520824 Value: 4520836
+```
+
+|格式|意義|
+|-|-|
+|%x|以16進位數字顯示位數|
+|%o|以8進位數字顯示位數|
+|%p|以實作指定的方式顯示數值，一般是指16進位|
+
+```c
+printf("Address of pi: %d Value: %d\n",&pi, pi);
+printf("Address of pi: %x Value: %x\n",&pi, pi);
+printf("Address of pi: %o Value: %o\n",&pi, pi);
+printf("Address of pi: %p Value: %p\n",&pi, pi);
+```
+
+輸出結果為
+```shell
+Address of pi: 4520824 Value: 4520836
+Address of pi: 44fb78 Value: 44fb84
+Address of pi: 21175570 Value: 21175604
+Address of pi: 0044FB78 Value: 0044FB84
+```
+
+%p與%x的差別在於%p會以大寫顯示16進位數值
+
+在不同平台上用相同的方式顯示指標數值並不容易，一個方式是將指標轉型為void的指標，再用%p印出
+```c
+printf("Value of pi: %p\n", (void*)pi);
+```
+
+### 使用間接運算子解參考指標
+間接運算子(*)會回傳指標變數只到的記憶體中的數值
+```c
+int num = 5;
+int *pi = &num;
+printf("%p\n",*pi);  // 會顯示5
+```
+
+解參考後的數值作為lvalue，lvalue能放在指派運算子左側的運算元，因為被指派了新值，所有的lvalue數值都會被改變
+
+```c
+*pi = 200;
+printf("%d\n",num);  // 會顯示200
+```
+
+### 函數指標
+指標也可以指向函數
+```c
+void (*foo)();
+```
