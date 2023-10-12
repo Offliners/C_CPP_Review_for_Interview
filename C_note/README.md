@@ -131,5 +131,8 @@ inline 和 #define 的差別在於：
 3. 巨集定義盡量不使用於複雜的函數
 4. 用 inline 後編譯器不一定會實作，僅為建議。
 
+## 七、前處理器相關
+前處理器主要處理加入檔案 #include、巨集定義 #define 和 #undef 條件編譯。
+
 ## Reference
 * Mr. Opengate - 常見 C 語言觀念題目總整理（適合考試和面試）: [Link](https://www.mropengate.com/2017/08/cc-c.html)
