@@ -232,3 +232,66 @@ int main() {
 ```
 
 ![Figure 1-6](./Fig/Figure1-6.png)
+
+### 指標大小與陣列
+處理指標時常需要使用四種內建指標型別
+1. `size_t` : 表示空間大小使用的安全型別
+2. `ptrdiff_t` : 指標運算使用
+3. `intptr_t`與`uintptr_t` : 用來存放指標位址
+
+### 認識size_t
+size_t型別表示C語言中所有物件的最大尺寸，也是sizeof回傳的型別
+
+※ 宣告字元數量與陣列索引變數時，使用size_t是好習慣，在迴圈計數、陣列索引以及某些指標運算時都應該使用這個型別
+
+在`stdio.h`與`stdlib.h`中的定義
+```c
+#ifndef __SIZE_T
+#define __SIZE_T
+typedef unsigned int size_t;  // 通常size_t的最大值定義為SIZE_MAX
+#endif
+```
+
+列印size_t時要注意，這個是無號數。建議用`%zu`，在不支援此格式時，可以用`%u`或`%lu`
+
+```c
+size_t sizet = -5;
+printf("%d\n",sizet);   // 印出 5
+printf("%zu\n",sizet);  // 印出 4294967291
+
+// 由於-5是有號數，最高位原為1表示負值，
+// 當以無號數來解讀時，最高位元會視為2的次方，因此使用%zu會看到很大的數值
+
+sizet = 5;
+printf("%d\n",sizet);   // 印出 5
+printf("%zu\n",sizet);  // 印出 5
+```
+
+※ size_t是無號數，切記使用正數
+
+### 使用sizeof與指標
+sizeof運算子可以取得指標的大小
+```c
+printf("Size of *char: %d\n",sizeof(char*));
+```
+
+輸出結果為
+```shell
+Size of *char: 4
+```
+
+### 使用intptr_t與uintptr_t
+intptr_t與uintptr_t型別用於儲存指標位址，會與系統使用的底層指標有相同的大小，uintptr_t為intptr_t的無號版本，uintptr_t的彈性不如intptr_t
+
+```c
+int num;
+intptr_t *pi = &num;
+uintptr_t *pu = &num;  // error: invalid conversion from 'int*' to
+                       // 'uintptr_t* {aka unsigned int*}' [-fpermissive]
+
+// uintptr_t與其他型別一同使用時都需要強制轉型 
+char c;
+uintptr_t *pc = (uintptr_t*)&c;
+```
+
+※ 避免將指標轉型成整數，在64位元指標的情況下，如果整數大小是4位元將會遺失大部分資訊
