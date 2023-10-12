@@ -154,3 +154,81 @@ printf("%d\n",num);  // 會顯示200
 ```c
 void (*foo)();
 ```
+
+### NULL的概念
+當NULL被指派給指標時表示沒有指向任何東西。NULL的概念表示指標持有一個不會與其他指標相等的特殊數值，沒有指到記憶體中的任何區域。兩個NULL指標總是相等，但兩者可以有各自的指標型別。NULL在許多函式庫中都定義如下:
+```c
+#define NULL ((void*)0)
+```
+
+※ NULL指標與未初始化指標並不相同，未初始化指標可能持有任何數值，有NULL值的指標則不會參照到記憶體的任何位置
+
+有趣的是可以將0值指派給指標，卻無法將其他數值指派給整數
+
+```c
+pi = 0;
+pi = NULL;
+pi = 100;  // 語法錯誤
+pi = num;  // 語法錯誤
+```
+
+指標可以用在邏輯表達式中唯一的運算元
+```c
+// 不是NULL
+if(pi) {}  // 如果pi被指派為NULL值，就會被解釋為二進位的0值，在C語言中也代表為False
+// 是NULL
+else {}    
+```
+
+```c
+int num;
+int *pi = 0;  // 0表示NULL指標
+pi = &num;
+*pi = 0;      // 0表示整數
+```
+
+※ 使用NULL可以明確提醒正在處理的變數是指標
+
+### void指標
+void指標是個可以指向任何資料型別的通用指標，有以下特性:
+1. void指標與char指標有相同的表達方式與記憶體對齊
+2. void指標永遠不會和其他指標相等，然而有兩個指派為NULL的void指標則會相等，void指標的實際行為會依系統而有不同
+
+任何指標皆可以指派給void指標，之後還可以轉型回來原來的指標，轉型後的值會等於原來的指標值
+```c
+int num;
+int *pi = &num;
+printf("Value of pi: %p\n", pi);
+void* pv = pi;
+pi = (int*) pv;
+printf("Value of pi: %p\n", pi);
+```
+
+輸出結果為
+```shell
+Value of pi: 100
+Value of pi: 100
+```
+
+※ 使用void指標時要注意，將指標轉型為void指標後，void指標能夠轉型為任何指標型別，沒有任何限制。
+
+sizeof運算子能夠用在void指標，卻不能用在void之上
+```c
+size_t size = sizeof(void*);  // 合法
+size_t size = sizeof(void);   // 不合法
+```
+
+### 全域與靜態指標
+```c
+int *globalpi;
+void foo() {
+    static int *staticpi;
+    ...
+}
+
+int main() {
+    ...
+}
+```
+
+![Figure 1-6](./Fig/Figure1-6.png)
