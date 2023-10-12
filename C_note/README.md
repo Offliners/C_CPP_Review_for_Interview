@@ -239,6 +239,81 @@ int main (){
 ```
 
 ## 十、延伸性資料型態：struct、typedef、union 和 enum
+1. 結構 struct
+struct 是使用者自定的型態，包含數個不同資料型態的變數，將不同的資料型態關聯在一起，使他們的關聯更直覺。
+
+```c
+struct [structName] {
+    char name[16]; 
+    int age;
+    struct [structName] *ptr;  
+    // 不能含有自己，但可以有自己型別的指標。
+};
+
+int main () {
+    struct [structName] person1 = {"Amy", 20 }; // 初始化
+    person.age = 21; // 操作
+}
+```
+
+2. 重新定義型態名稱 typedef
+typedef 保留字可以為資料型態建立別名，使程式更易閱讀理解。例如：
+```c
+typedef struct [structName] {
+    char name[16];
+    int age;
+    struct [structName] *ptr;
+} PERSON;
+
+int main () {
+    PERSON person1 = {"Amy", 20 };
+    person1.age = 21;
+}
+```
+
+3. 列舉 enum
+enum 是一種常數定義方式，可以提升可讀性，enum 裡的識別字會以 int 的型態，從指定的值開始遞增排列 (預設為 0)。
+
+```c
+typedef enum {SUN=0, MON, TUE, WED, THU, FRI, SAT} week_type;
+week_type week = WED;
+if(week == WED)
+    printf("%d\n", week) // 3
+```
+
+4. 共用結構 union
+電腦架構早期記憶體空間比較不足，因此需要使用共用結構讓各變數共用一塊記憶體，union 所需的記憶體空間大小由最大的成員變數決定，例如以下 union 的大小為 8 位元組 (upper bound double)。
+```c
+union data{
+    char c;
+    int num;
+    double fnum;
+};
+union data a, b;
+```
+
+struct 是每個成員變數都配置一段空間，union 則是共用一段記憶體空間。另外，union 需注意記憶體內的排列方式，如 little-endian 方法排列，int 會放在 double 的 byte 3~0 的位置，從而改變 double 讀取時的值。
+
+## [補充] 未定義行為 (Undefined behavior)
+常見的語法 i++ 和 ++i 具有以下性質：
+* i++ : 先用i，再將i+1
+* ++i : 先i+1，再用i
+
+因此會出現這種問題：
+```c
+int i = 10
+i = i++ + ++i;
+```
+
+這個問題的標準答案是
+```txt
+i = i++ + ++i;
+i = 10 + ++i;
+i = 10 + 12;
+i = 22
+```
+
+但是這是有爭議的！編譯時會有警告訊息
 
 ## Reference
 * Mr. Opengate - 常見 C 語言觀念題目總整理（適合考試和面試）: [Link](https://www.mropengate.com/2017/08/cc-c.html)
