@@ -134,5 +134,111 @@ inline 和 #define 的差別在於：
 ## 七、前處理器相關
 前處理器主要處理加入檔案 #include、巨集定義 #define 和 #undef 條件編譯。
 
+1. 巨集 #define
+\#define 是巨集，在前置處理器 (preprocessor) 執行時處理，將要替換的程式碼展開做文字替換。define 語法範例如下：
+```c
+#define PI 3.1415926    //常數巨集
+#define A(x) x          //函數巨集
+#define MIN(A，B)  ( (A)  <= (B) ? (A) : (B))
+```
+
+注意把參數用括號括起來，不然容易發生以下錯誤：
+```c
+#define SUM(a,b)  a+b
+```
+
+當 SUM(2,5)*10 時，因為沒有括弧先乘除後加減，得輸出為 52，錯誤。
+
+2. 引入防護和條件編譯
+引入防護 (Include guard) 是一種條件編譯，用於防範 #include 指令重複引入的問題。
+```c
+/* 避免重複引入 */
+#ifndef MYHEADER
+#define MYHEADER
+...
+#endif
+```
+
+第一次被引入時會定義巨集 MYHEADER，再次引入時判斷 #ifndef 測試失敗，因此編譯器會直接跳到 #endif，由此避免了重複引用。另有非標準的指令 #pragma once 提供相同效果，但由於可攜性不如上例，因此大多時候還是上面提到的方法為主
+
+條件編譯還有一些其它應用：
+```c
+/* 若前處理器已經 define MYHEADER，就編譯 part A，否則編譯 part B。 */
+#ifdef MYHEADER
+#define MYHEADER
+   // part A
+#else
+   // part B
+#endif
+
+/* DEBUG flag */
+#ifdef DEBUG
+   printf("device_open(%p) ", file);
+#endif
+```
+
+## 八、bitwise operator
+邏輯上的運算子在 C 中的語法分別如下：
+1. AND （&）
+2. OR（|）
+3. NOT（!）
+4. XOR（^）// bit值不一樣為 1
+5. complement（~）
+6. shift (<<, >>)
+
+bitwise 的操作常與 "0x" 這種 16 進位表示法，方便轉換操作。
+
+基本運算
+```c
+unsigned long num_a = 0x00001111;
+unsigned long num_b = 0x00000202;
+unsigned long num_c;
+
+num_c = num_a & (~num_b);
+num_c = num_c | num_b;
+
+printf("%lx", num_c); // 00001313
+```
+
+mask 方法做 bitwise 操作
+```c
+a = a | 7    // 最右側 3 位設為 1，其餘不變。
+a = a & (~7) // 最右側 3 位設為 0，其餘不變。
+a = a ^ 7    // 最右側 3 位執行 NOT operator，其餘不變。
+```
+
+## 九、複製：memcpy 和 strcpy
+1. 記憶體複製
+```c
+void *memcpy( void *dest, const void *src, size_t count );
+```
+memcpy() 可以複製任何類型資料，不處理字串結束 '\0' 的情況，當 *src 長度大於 *dest 時會 buffer overflow (編譯時不會錯誤)。
+
+2. 字串複製
+```c
+void *strcpy( void *dest, const void *src);
+```
+
+strcpy() 只能用於字串複製，不需要指定長度，因為會自動偵測以 '\0' 為結尾，當 *src 長度大於 *dest 時會 buffer overflow (*dest 將沒有 \0)。
+
+舉例
+```c
+#include <string.h>
+#include <stdio.h>
+int main (){
+    const char *str1 = "abc\0def";
+    char str2[16] = {0};
+    char str3[16] = {0};
+
+    strcpy(str2, str1);
+    memcpy(str3, str1, sizeof(str3));  // 8
+    printf("str2 = %s\n", str2);       // str2 = abc
+    printf("str3 = %c\n", str3[5]);    // str3 = e
+    return 0;
+}
+```
+
+## 十、延伸性資料型態：struct、typedef、union 和 enum
+
 ## Reference
 * Mr. Opengate - 常見 C 語言觀念題目總整理（適合考試和面試）: [Link](https://www.mropengate.com/2017/08/cc-c.html)
