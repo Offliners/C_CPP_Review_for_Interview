@@ -32,3 +32,4 @@ Detail: [Link](https://neetcode.io/)
 |295|Climbing Stairs|Easy|[link](./climbing_stairs/climbing_stairs.md)|
 |356|Maximum Subarray|Medium|[link](./maximum_subarray/maximum_subarray.md)|
 |386|Rotate Image|Medium|[link](./rotate_image/rotate_image.md)|
+|403|Single Number|Easy|[link](./single_number/single_number.md)|
