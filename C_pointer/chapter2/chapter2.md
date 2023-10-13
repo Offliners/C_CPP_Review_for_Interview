@@ -60,6 +60,7 @@ pi = (int*) malloc(sizeof(int));
 ```
 
 位址500的記憶體沒有被釋放，而程式也不再持有這個位址的參考。
+
 ![Figure 2-3](./Fig/Figure2-3.png)
 
 接下來的例子為字串配置了記憶體並初始化，再逐一字元顯示:
@@ -77,3 +78,15 @@ while(*name != 0) {
 ![Figure 2-4](./Fig/Figure2-4.png)
 
 ### 動態記憶體配置函數
+以下介紹函數可以在大多數系統的`stdlib.h`標頭檔中找到:
+* malloc
+* realloc
+* calloc
+* free
+
+|函數|說明|
+|-|-|
+|malloc|從堆積配置記憶體|
+|realloc|根據之前配置的記憶體區塊重新配置不同大小的記憶體|
+|calloc|從堆積配置記憶體並填入0|
+|free|將記憶體區塊歸還至堆積|
