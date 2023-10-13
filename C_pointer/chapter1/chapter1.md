@@ -316,3 +316,58 @@ uintptr_t *pc = (uintptr_t*)&c;
 
 這些運算並非總是能夠用於函數指標
 
+### 指標與整數相加
+這個運算很常見也很有用，當指標加上整數，實際加上的是整數乘上指標資料型別的位元數
+
+|資料型別|位元組數|
+|-|-|
+|byte|1|
+|char|1|
+|short|2|
+|int|4|
+|long|8|
+|float|4|
+|double|8|
+
+```c
+int vector[] = {28, 41, 7};
+int *pi = vector;      // pi: 100
+printf("%d\n",*pi);    // 顯示28
+pi += 1;               // pi: 104
+printf("%d\n",*pi);    // 顯示41
+pi += 1;               // pi: 108
+printf("%d\n",*pi);    // 顯示7
+
+// pi指標指向了自己，存取陣列邊界之外的記憶體是十分危險的事情，要盡力便免
+pi = vector;
+pi += 3;
+```
+
+![Figure 1-7](./Fig/Figure1-7.png)
+
+※ 只使用陣列名稱時，會回傳陣列的位址，也就是陣列中第一個元素的位址
+
+以下程式示範對short與char資料型別指標做加法運算
+```c
+short s;
+short *ps = &s;
+char c;
+char *pc = &c;
+
+printf("Content of ps before: %d\n",ps);
+ps = ps + 1;
+printf("Content of ps after: %d\n",ps);
+printf("Content of pc before: %d\n",pc);
+pc = pc + 1;
+printf("Content of pc after: %d\n",pc);
+```
+
+輸出結果為:
+```shell
+Content of ps before: 120
+Content of ps after: 122
+Content of pc before: 128
+Address of pc after: 129
+```
+
+### void指標與加法
