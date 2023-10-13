@@ -540,3 +540,93 @@ int *const cpi = &num;
 1. cpi必須初始為指向不是常數的變數
 2. cpi指標無法修改
 3. cpi指到的資料可以修改
+
+這種類型的指標概念可以視為:
+![Figure 1-13](./Fig/Figure1-13.png)
+
+可以解參考cpi設定指到的資料為新值，以下兩個都是合法的指派命令:
+```c
+*cpi = limit;
+*cpi = 25;
+```
+
+然而，如果試著將cpi初始化為另一個常數limit，會得到警告
+```c
+const int limit = 500;
+int *const cpi = &limit;
+
+// warning: initialization discards qualifiers from pointer target type
+```
+
+如果cpi參照到常數limit，就能夠透過cpi修改常數內容，但這不會是程式預期的行為，通常會讓常數維持常數狀態。
+
+將cpi指派到特定的位址後，就無法為cpi指派新值:
+```c
+int num;
+int age;
+int *const cpi = &num;
+cpi = &age;
+
+// 'cpi' : you cannot assign to a variable that is const
+```
+
+### 常數指標常數
+常數指標常數視個較少使用的指標型別，指標本身無法修改而且指向的資料也無法透過指標修改
+```c
+const int * const cpci = &limit;
+```
+
+![Figure 1-14](./Fig/Figure1-14.png)
+
+如同常數指標，指派給cpci的病不需要是常數位址，可以如下使用num:
+```c
+int num;
+const int * const cpci = &num;
+```
+
+指標宣告時就必須初始化，沒有初始化的程式會產生語法錯誤:
+```c
+const int * const cpci;
+
+// 'cpci' : const object must be initialized if not extern
+```
+
+對於常數指標常數，無法進行以下操作:
+1. 修改指標
+2. 修改指標指到的資料內容
+
+```c
+// 試著將cpci指派新的位址會產生錯誤訊息
+cpci = &num;
+
+// 'cpci' : you cannot assign to a variable that is const
+
+
+// 如果解參考指標指派新值，也會產生語法錯誤
+*cpci = 25;
+
+// 'cpci' : you cannot assign to a variable that is const expression must be a modifiable lvalue
+```
+
+## 指向「常數指標常數」的指標
+常數指標也可以做多層級的間接操作:
+```c
+const int * const cpci = &limit;
+const int * const * pcpci;
+```
+
+![Figure 1-15](./Fig/Figure1-15.png)
+
+使用方式如下，程式會輸出兩次500
+```c
+printf("%d\n",*cpci);
+pcpci = &cpci;
+printf("%d\n",**pcpci);
+```
+
+|指標類型|指標是否可修改|參照的資料是否能修改|
+|-|-|-|
+|非常數指標|✓|✓|
+|常數指標|✓|✕|
+|非常數指標常數|✕|✓|
+|常數指標常數|✕|✕|
