@@ -428,3 +428,115 @@ printf("p2>p0: %d\n",p2>p0); // p2>p0: 1 (true)
 printf("p2<p0: %d\n",p2<p0); // p2<p0: 0 (false)
 printf("p0>p1: %d\n",p0>p1); // p0>p1: 0 (false)
 ```
+
+### 多層級間皆操作
+指標能夠提供多層級的間接操作，經常可以看到變數宣告為指標的指標，有時候稱為雙重指標 (double pointer)。
+
+以下的例子使用三個陣列:
+```c
+// 第一個陣列是個用來存放書籍名稱的清單的陣列
+char *titles[] = {"A Tale of Two Cities", 
+    "Wuthering Heights","Don Quixote",
+    "Odyssey","Moby-Dick","Hamlet",
+    "Gulliver's Travels"
+};
+
+// 另外兩個陣列的目的分別為維護最好的書籍以及英文書
+char **bestBooks[3];
+char **englishBooks[4];
+
+
+// 兩陣列初始化如下
+// 等號右邊的數值計算事先依據索引值取得元素，再透過取址運算子取得位址
+bestBooks[0] = &titles[0];
+bestBooks[1] = &titles[3];
+bestBooks[2] = &titles[5];
+englishBooks[0] = &titles[0];
+englishBooks[1] = &titles[1];
+englishBooks[2] = &titles[5];
+englishBooks[3] = &titles[6];
+
+printf("%s\n",*englishBooks[1]); // Wuthering Heights
+```
+
+記憶體配置如下圖:
+![Figure 1-10](./Fig/Figure1-10.png)
+
+多層級間接操作在程式的撰寫與使用上提供額外的彈性，間接的層級並沒有任何預設限制，但太多層級的間接操作會造成困擾並提高維護的困難。
+
+### 常數與指標
+將const關鍵字結合址標示C語言中強而有力且內容豐富的主題，能為不同類型的問題提供額外的保護，其中特別重要且有用的就是指向常數的指標。
+
+指標能夠定義為指向某個常數，表示無法用指標修改參考到的數值內容
+```c
+int num = 5;
+const int limit = 500;
+int *pi;          // 指向整數的指標
+const int *pci;   // 指向整數常數的指標
+pi = &num;
+pci = &limit;
+```
+
+![Figure 1-11](./Fig/Figure1-11.png)
+
+將各變數的位址與數值印出來:
+```c
+printf(" num - Address: %p value: %d\n",&num, num);
+printf("limit - Address: %p value: %d\n",&limit, limit);
+printf(" pi - Address: %p value: %p\n",&pi, pi);
+printf(" pci - Address: %p value: %p\n",&pci, pci);
+```
+
+輸出結果為:
+```shell
+num - Address: 100 value: 5
+limit - Address: 104 value: 500
+pi - Address: 108 value: 100
+pci - Address: 112 value: 104
+```
+
+如果只是讀取參考位址的數值，那解參考常數指標並不會造成任何問題:
+```c
+printf("%d\n", *pci);
+```
+
+程式無法透過解參考常數指標的方式修改參考的數值內容，只能修改指標指到的位址。指標值並不是常數，可以修改指標指向其他整數常數或是一般的整數，修改指標不會有任何問題。
+
+這表示以下程式是合法的:
+```c
+// 可以解參考pci讀取變數內容，卻無法透過解參考修改數值
+pci = &num;
+```
+
+以下程式會造成錯誤:
+```c
+*pci = 200;  // 'pci' : you cannot assign to a variable that is const
+```
+
+指標認為指到的變數是整數常數，不允許透過指標修改內容，但仍可以透過num修改內容，只是無法透過pci進行修改。
+
+![Figure 1-12](./Fig/Figure1-12.png)
+
+pci宣告為指向整數常數的指標代表:
+1. pci可以指派為指向其他整數常數
+2. pci可以指派為指向其他非常數整數
+3. pci可以透過解參考讀取數值
+4. pci無法透過解參考改變指向的位址內容
+
+※ 宣告中const與資料型別的順序並不重要，以下兩種形式的宣告有相同效果:
+```c
+const int *pci;
+int const *pci;
+```
+
+### 指向不是常數的指標常數
+也可以將指標常數 (constant pointer) 宣告為指向非常數，這樣的宣告方式表示雖然指標無法改變，但指向的資料值可以改變
+```c
+int num;
+int *const cpi = &num;
+```
+
+這樣的宣告表示:
+1. cpi必須初始為指向不是常數的變數
+2. cpi指標無法修改
+3. cpi指到的資料可以修改
