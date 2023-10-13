@@ -371,3 +371,60 @@ Address of pc after: 129
 ```
 
 ### void指標與加法
+大多數編譯氣都允許對void指標進行數學運算作為擴充功能。以下假設void指標的大小為4，在void指標加一可能造成語法警告。
+
+```c
+int num = 5;
+void *pv = &num;
+printf("%p\n",pv);
+pv = pv+1;  // 語法警告，warning: pointer of type 'void *' used in arithmetic [-Wpointerarith]
+```
+
+這不是標準C語言功能，編譯器會產生警告
+
+### 指標減掉整數
+指標減掉整數的行為類似指標加法，減掉整數值乘上資料型別的大小
+
+```c
+int vector[] = {28, 41, 7};
+int *pi = vector + 2;    // pi: 108
+printf("%d\n",*pi);      // 顯示7
+pi--;                    // pi: 104
+printf("%d\n",*pi);      // 顯示41
+pi--;                    // pi: 100
+printf("%d\n",*pi);      // 顯示28
+```
+
+![Figure 1-7](./Fig/Figure1-7.png)
+
+### 指標相減
+兩指標相減會得到位址間的差，位址差除了判斷元素在陣列中的順序之外，並不太有用。兩個指標的差是「單位」的差異數。
+
+```c
+int vector[] = {28, 41, 7};
+int *p0 = vector;
+int *p1 = vector+1;
+int *p2 = vector+2;
+printf("p2-p0: %d\n",p2-p0); // p2-p0: 2
+printf("p2-p1: %d\n",p2-p1); // p2-p1: 1
+printf("p0-p1: %d\n",p0-p1); // p0-p1: -1
+```
+
+![Figure 1-9](./Fig/Figure1-9.png)
+
+不要將指標相減與解參考後的數值相減混淆
+```c
+printf("*p0-*p1: %d\n",*p0-*p1); // *p0-*p1: -13
+```
+
+### 比較指標
+指標可以透過標準的比較運算子比較，一般而言，比較指標並沒有太大的用處，當比較的指標址像陣列的元素，能夠用結果判斷元素在陣列中的順序。
+```c
+int vector[] = {28, 41, 7};
+int *p0 = vector;
+int *p1 = vector+1;
+int *p2 = vector+2;
+printf("p2>p0: %d\n",p2>p0); // p2>p0: 1 (true)
+printf("p2<p0: %d\n",p2<p0); // p2<p0: 0 (false)
+printf("p0>p1: %d\n",p0>p1); // p0>p1: 0 (false)
+```
