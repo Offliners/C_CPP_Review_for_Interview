@@ -6,17 +6,16 @@ using namespace std;
 class Solution {
 public:
     vector<int> sortArray(vector<int>& nums) {
-        for(int i = 1; i < nums.size(); ++i)
+        for(int i = 0; i < nums.size() - 1; ++i)
         {
-            int key = nums[i];
-            int j = i - 1;
-            while(j >= 0 && key < nums[j])
-            {
-                nums[j + 1] = nums[j];
-                j--;
-            }
-
-            nums[j + 1] = key;
+            int min_index = i;
+            for(int j = i + 1; j < nums.size(); ++j)
+                if(nums[min_index] > nums[j])
+                    min_index = j;
+            
+            int temp = nums[min_index];
+            nums[min_index] = nums[i];
+            nums[i] = temp;
         }
 
         return nums;

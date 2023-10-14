@@ -14,6 +14,7 @@ Detail: [Link](https://neetcode.io/)
 |8|Longest Common Prefix|Easy|[link](./longest_common_prefix/longest_common_prefix.md)|
 |10|Pascal's Triangle|Easy|[link](./pascals_triangle/pascals_triangle.md)|
 |11|Remove Element|Easy|[link](./remove_element/remove_element.md)|
+|24|Sort an Array|Medium|[link](./sort_an_array/sort_an_array.md)|
 |52|Sign of the Product of an Array|Easy|[link](./sign_of_the_product_of_an_array/sign_of_the_product_of_an_array.md)|
 |64|Reverse String|Easy|[link](./reverse_string/reverse_string.md)
 |66|Move Zeroes|Easy|[link](./move_zeroes/move_zeroes.md)|
