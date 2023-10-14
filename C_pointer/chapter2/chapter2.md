@@ -141,3 +141,44 @@ double *pd = (double*)malloc(NUMBER_OF_DOUBLES * sizeof(double));
 ```
 
 ※ 指定配置的位元組數量時，盡量使用sizeof運算子為佳
+
+### malloc搭配靜態與全域指標
+初始化靜態或全域變數時不能使用函數呼叫，以下程式碼宣告了靜態變數，並試著用malloc初始化:
+```c
+static int *pi = malloc(sizeof(int));  // 會產生編譯錯誤訊息，全域變數也是一樣
+```
+
+靜態變數可以將宣告與初始化分離成兩個步驟以避免這種問題，然而全域變數的宣告未於函數與執行程式之外，無法使用類似的作法，因為指派命令必須位於函數之中:
+```c
+static int *pi;
+pi = malloc(sizeof(int));
+```
+
+※ 以編譯器的觀點而言，使用初始化運算子`=`與指派運算子`=`並不相同
+
+### 使用calloc函數
+calloc函數會同時配置並清除記憶體，原型如下:
+```c
+void *calloc(size_t numElements, size_t elementSize);
+```
+
+※ 清除記憶體表示將記憶體填入2進位的0值
+
+這個函數會配置numElements與elementSize乘積數量的記憶體，傳回指向記憶體第一個位元組的指標: 如果函數無法配置記憶體則傳回NULL指標。如果numElements或elementSize其中一個是0值，會傳回NULL指標，如果calloc無法配置記憶體，也會傳回NULL指標，並將全域變數errno設為EMOMEM (記憶體不足，out of memory)，這是個POSIX錯誤碼，並非支持所有系統。
+
+以下範例pi配置20個位元組，記憶體內容都設為0:
+```c
+int *pi = calloc(5,sizeof(int));
+```
+
+如果不用calloc，也可以使用malloc搭配memset函數達到相同的效果:
+```c
+int *pi = malloc(5 * sizeof(int));
+memset(pi, 0, 5 * sizeof(int));
+```
+
+※ memset函數會將整個記憶體區塊填入相同值，第一個參數是指向要填滿的記憶體區塊的指標，第二個參數是填入區塊的數值，最後一個是參數則是需要填滿的位元數。
+
+需要清空記憶體可以使用calloc，但calloc的執行速度比malloc慢。
+
+※ 現在不再需要使用cfree函數。在早期的C語言，這個函數用來釋放由calloc配置的記憶體。
