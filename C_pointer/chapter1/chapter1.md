@@ -1,5 +1,4 @@
 # Chatper 1 - 入門
-## 指標與記憶體
 ### 記憶體類型:
 1. 靜態 Static / 全域 Global
 2. 自動 Automatic
