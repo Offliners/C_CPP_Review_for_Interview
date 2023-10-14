@@ -182,3 +182,59 @@ memset(pi, 0, 5 * sizeof(int));
 需要清空記憶體可以使用calloc，但calloc的執行速度比malloc慢。
 
 ※ 現在不再需要使用cfree函數。在早期的C語言，這個函數用來釋放由calloc配置的記憶體。
+
+### 使用realloc函數
+程式執行一段時間之後，可能會需要改變之前配置給指標的記憶體區塊大小，這對於可變動長度的陣列來說特別有用。函數原型如下:
+```c
+void *realloc(void *ptr, size_t size);
+```
+
+realloc函數傳回第一個指向記憶體區塊的指標，函數需要兩個參數，第一個參數是原先的區塊，第二個參數是新的區塊大小。新的區塊大小會與第一個參數指向的記憶體區塊大小不同，傳回值是個指向重新配置過記憶體區塊的指標。
+
+|第一個參數|第二個參數|行為|
+|-|-|-|
+|NULL|NA|與malloc相同|
+|非NULL|0|釋放原始記憶體區塊|
+|非NULL|比原先區塊小|在原先區塊中配置較小的區塊，多餘的釋放回堆積|
+|非NULL|比原先區塊大|在原先區塊或堆積中其他位置配置一個更大的區塊|
+
+```c
+char *string1;
+char *string2;
+
+// 一開始配置16個位元組
+string1 = (char*) malloc(16);
+
+// 但只用了13個位元組
+strcpy(string1, "0123456789AB");
+
+// 使用realloc函數指定了較小的區塊大小
+string2 = realloc(string1, 8);
+printf("string1 Value: %p [%s]\n", string1, string1);
+printf("string2 Value: %p [%s]\n", string2, string2);
+```
+
+輸出結果:
+```shell
+string1 Value: 0x500 [0123456789AB]
+string2 Value: 0x500 [0123456789AB]  # 在原先記憶體位置做修改
+```
+
+![FIgure 2-6](./Fig/Figure2-6.png)
+
+接下來程式利用realloc配置更多空間:
+```c
+string1 = (char*) malloc(16);
+strcpy(string1, "0123456789AB");
+string2 = realloc(string1, 64);
+printf("string1 Value: %p [%s]\n", string1, string1);
+printf("string2 Value: %p [%s]\n", string2, string2);
+```
+
+輸出結果:
+```shell
+string1 Value: 0x500 [0123456789AB]
+string2 Value: 0x600 [0123456789AB]  # 配置額外的記憶體
+```
+
+![FIgure 2-7](./Fig/Figure2-7.png)
