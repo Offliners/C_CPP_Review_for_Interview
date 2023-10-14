@@ -15,6 +15,7 @@ Detail: [Link](https://leetcode.com/problem-list/top-100-liked-questions/)
 |48|Rotate Image|Medium|[link](./rotate_image/rotate_image.md)|
 |53|Maximum Subarray|Medium|[link](./maximum_subarray/maximum_subarray.md)|
 |70|Climbing Stairs|Easy|[link](./climbing_stairs/climbing_stairs.md)|
+|74|Search a 2D Matrix|Medium|[link](./search_a_2d_matrix/search_a_2d_matrix.md)|
 |94|Binary Tree Inorder Traversal|Easy|[link](./binary_tree_inorder_traversal/binary_tree_inorder_traversal.md)|
 |118|Pascal's Triangle|Easy|[link](./pascals_triangle/pascals_triangle.md)|
 |121|Best Time to Buy and Sell Stock|Easy|[link](./best_time_to_buy_and_sell_stock/best_time_to_buy_and_sell_stock.md)|

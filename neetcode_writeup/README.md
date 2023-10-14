@@ -23,6 +23,7 @@ Detail: [Link](https://neetcode.io/)
 |92|Valid Parentheses|Easy|[link](./valid_parentheses/valid_parentheses.md)|
 |111|Binary Search|Easy|[link](./binary_search/binary_search.md)|
 |112|Search Insert Position|Easy|[link](./search_insert_position/search_insert_position.md)|
+|122|Search a 2D Matrix|Medium|[link](./search_a_2d_matrix/search_a_2d_matrix.md)|
 |129|Find First and Last Position of Element in Sorted Array|Medium|[link](./find_first_and_last_position_of_element_in_sorted_array/find_first_and_last_position_of_element_in_sorted_array.md)|
 |135|Reverse Linked List|Easy|[link](./reverse_linked_list/reverse_linked_list.md)|
 |136|Merge Two Sorted Lists|Easy|[link](./merge_two_sorted_lists/merge_two_sorted_lists.md)|
