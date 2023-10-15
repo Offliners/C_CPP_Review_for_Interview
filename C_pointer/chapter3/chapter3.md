@@ -211,3 +211,105 @@ int* allocateArray(int size, int value) {
 ```
 
 每次呼叫allocateArray函數都會重複使用相同的陣列，清除前次呼叫建立的陣列內容。除此之外，靜態陣列必須宣告為固定大小，會限制了函數處理不同陣列大小的能力。
+
+### 傳入NULL指標
+當函數接受指標作為參數值，在使用前先檢查是否為NULL指標是個好習慣
+```c
+int* allocateArray(int *arr, int size, int value) {
+    if(arr != NULL) {
+        for(int i=0; i<size; i++) {
+            arr[i] = value;
+        }
+    }
+    return arr;
+}
+```
+
+如果指標NULL，不會進行任何動作，程式可以繼續執行不會發生不正常終止。
+
+### 傳入指標的指標
+當指標做完參數傳入函數時，是以傳值的方式傳入，如果想要修改原來的指標內容而非指標複本，就必須傳入指標的指標。
+
+在下述的範例中，傳入指向整數陣列的指標，在函數內部初始化，函數透過第一個參數傳回配置的記憶體。函數先配置記憶體再初始化，配置的記憶體位址會指派給指向整數的指標。為了修改由外部傳入的指標，必須傳入指標的位址，因此第一個參數宣告為指向整數指標的指標，呼叫函數時則須傳入指標的位址。
+```c
+void allocateArray(int **arr, int size, int value) {
+    *arr = (int*)malloc(size * sizeof(int));
+    if(*arr != NULL) {
+        for(int i=0; i<size; i++) {
+            *(*arr+i) = value;
+        }
+    }
+}
+```
+
+測試函數如下:
+```c
+int *vector = NULL;
+allocateArray(&vector,5,45);
+```
+
+allocateArray的第一個參數是以指向整數指標的指標方式傳入，當呼叫函數時，需要傳入相同型別，範例中傳入vector的位址。由malloc傳回的位址指派給arr變數，解參考指向指數指標的指標會得到整數指標，也就是vector的位址，因此會修改vector的數值。
+
+※ 劃出記憶體配置圖是找出記憶體洩漏問題最簡單的方法
+
+![Figure 3-7](./Fig/Figure3-7.png)
+
+以下程式說明為何傳入指標無法產生預期的結果:
+```c
+void allocateArray(int *arr, int size, int value) {
+    arr = (int*)malloc(size * sizeof(int));
+    if(arr != NULL) {
+        for(int i=0; i<size; i++) {
+            arr[i] = value;
+        }
+    }
+}
+```
+
+使用方式如下:
+```c
+int *vector = NULL;
+allocateArray(&vector,5,45);
+printf("%p\n",vector);
+```
+
+執行程式後會輸出0x0，vector傳入函數時是將數值複製為arr參數，修改arr並不會影響vector的數值。函數傳回時儲存在arr的數值並不會複製到vector。除此之外，由於沒有任何指標指向位址600的記憶體，還造成了記憶體洩漏。
+
+![Figure 3-8](./Fig/Figure3-8.png)
+
+### 客製free函數
+free函數不會檢查傳入的指標是否為NULL，也不會在釋放後將指標設為NULL，然而釋放指標後將指標設為NULL是個好習慣。
+
+```c
+void saferFree(void **pp) {
+    if (pp != NULL && *pp != NULL) {
+        free(*pp);
+        *pp = NULL;
+    }
+}
+```
+
+safeFree函數呼叫free函數釋放記憶體，參數宣告為void指標，使用指標的指標讓程式修改傳入的指標值，void型別則能夠接受所有的指標型別。如果呼叫函數時沒有明確地將指標轉型為void指標便會得到警告，要明確地使用轉型才能避免警告訊息。
+
+以下是safeFree的巨集，在呼叫safeFree前將指標轉型為正確的型別，並使用取址運算子取得位址，讓函數使用者不用額外的轉型與取得指標的位址。
+```c
+#define safeFree(p) saferFree((void**)&(p))
+```
+
+以下為巨集的使用方式:
+```c
+int main() {
+    int *pi;
+    pi = (int*) malloc(sizeof(int));
+    *pi = 5;
+    printf("Before: %p\n",pi);
+    safeFree(pi);
+    printf("After: %p\n",pi);
+    safeFree(pi);
+    return (EXIT_SUCCESS);
+}
+```
+
+假設malloc傳回的記憶體位於1000，以上程式就會依序輸出1000與0，第二次使用safeFree巨集時傳入NULL值並不會造成程式終止，因為函數會偵測出這個狀況並忽略。
+
+### 函數指標
