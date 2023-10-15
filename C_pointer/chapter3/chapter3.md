@@ -98,3 +98,116 @@ int main() {
 ```
 
 ![FIgure 3-4](./Fig/Figure3-4.png)
+
+### 傳入常數指標
+傳入常數指標是C語言中常用的技巧，有很高的效率，因為實際傳遞的只是資料的指標，可以避免複製記憶體中大量的資料，但一般的指標能夠修改資料，如果不希望資料被修改，那傳入的指標就該指向常數資料。
+
+```c
+void passingAddressOfConstants(const int* num1, int* num2) {
+    // 在函數內部，無法修改以整數常數指標方式傳入的資料
+    *num2 = *num1;
+}
+
+int main() {
+    const int limit = 100;
+    int result = 5;
+    passingAddressOfConstants(&limit, &result);
+    return 0;
+}
+```
+
+若將100指派給result:
+```c
+void passingAddressOfConstants(const int* num1, int* num2) {
+    *num1 = 100;  // 語法錯誤，修改被作為常數參考到的第一參數
+    *num2 = 200;
+}
+
+int main() {
+    const int limit = 100;
+    int result = 5;
+    passingAddressOfConstants(&limit, &limit);  // 語法錯誤，第二個參數型別與實際傳入的型別不符合
+    return 0;
+}
+```
+
+以下傳入整數數字的位址也會產生語法錯誤:
+```c
+// 錯誤訊息說明需要以lvalue做為取址運算子的運算元
+passingAddressOfConstants(&23, &23);
+```
+
+### 傳回指標
+傳回指標很容易，只要將傳回值宣告作為指向適當資料型別的指標就行了，以下是兩個常用的技巧:
+* 在函數中使用malloc配置記憶體，再傳回位址。呼叫函數的程式負責釋放傳回的指標。
+* 將物件傳入函數供內部修改，呼叫函數的程式負責配置與釋放物件所需的記憶體。
+
+首先示範使用malloc函數配置傳回的記憶體:
+```c
+int* allocateArray(int size, int value) {
+    int* arr = (int*)malloc(size * sizeof(int));
+    for(int i=0; i<size; i++) {
+        arr[i] = value;
+    }
+    return arr;
+}
+```
+
+函數使用如下:
+```c
+int* vector = allocateArray(5,45);
+for(int i=0; i<5; i++) {
+    printf("%d\n", vector[i]);
+}
+```
+
+![Figure 3-5](./Fig/Figure3-5.png)
+
+「之前」圖顯示return命令之前的情況，「之後」圖呈現函數回傳後程式的狀態，vector變數現在持有函數中配置的記憶體位址，雖然arr陣列已經在函數結束後清除，但指標參考到的位址並沒有清除，這塊記憶體作中需要被釋放。
+
+雖然上述範例能夠正確執行，但從函數傳回指標時可能發生許多問題:
+1. 傳回未初始化的指標
+2. 傳回指向不合法位址的指標
+3. 傳回指向區域變數的指標
+4. 傳回的指標沒有被適當的釋放
+
+allocateArray函數很可能發生最後一個問題。從函數中傳回動態配置記憶體表示呼叫函數的城市需要負責釋放記憶體:
+```c
+int* vector = allocateArray(5,45);
+...
+free(vector);
+```
+
+不需要傳回資料時必須釋放記憶體，沒有釋放記憶體會造成記憶體洩漏。
+
+### 區域資料的指標
+傳回指向區域變數的指標是不了解程式堆疊運作方式的程式設計師常犯的錯誤，例如以下範例:
+```c
+int* allocateArray(int size, int value) {
+    int arr[size];
+    for(int i=0; i<size; i++) {
+        arr[i] = value;
+    }
+    return arr;  // 傳回區域變數未址而非動態配置記憶體
+}
+```
+
+不幸的是，傳回的陣列在函數結束時就不再合法，函數堆疊框架已經從堆疊中移除，但只要呼叫了其他函數就會覆蓋這些數值:
+```c
+int* vector = allocateArray(5,45);
+for(int i=0; i<5; i++) {
+    printf("%d\n", vector[i]);
+}
+```
+
+![Figure 3-6](./Fig/Figure3-6.png)
+
+另一個方式是將arr變數宣告為靜態變數，雖變數的可視範圍侷限在函數當中，但資料內容配置在堆疊框架之外，避免了其他函數覆蓋變數內容的問題:
+```c
+int* allocateArray(int size, int value) {
+    static int arr[5];
+    ...
+}
+```
+
+每次呼叫allocateArray函數都會重複使用相同的陣列，清除前次呼叫建立的陣列內容。除此之外，靜態陣列必須宣告為固定大小，會限制了函數處理不同陣列大小的能力。
