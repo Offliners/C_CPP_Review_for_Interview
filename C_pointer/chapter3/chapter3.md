@@ -348,4 +348,86 @@ int (*f5)();
 int* (*f6)();
 ```
 
+顯然f4是個傳回指向整數指標的函數，然而，透過小括號很明確地將表示指標的星號與函數名稱結合在一起，讓它變成函數指標。
+
 ### 使用函數指標
+以下是個使用函數指標的簡單例子:
+```c
+int (*fptr1)(int);
+
+int square(int num) {
+    return num*num;
+}
+```
+
+要使用函數指標執行square函數，需要將square函數的位址指派給函數指標，如同陣列名稱，單單使用含述名稱時會傳回函數的位址:
+```c
+int n = 5;
+fptr1 = square;
+printf("%d squared is %d\n",n, fptr1(n));
+```
+
+輸出結果為:
+```shell
+5 squared is 25
+```
+
+也可以使用取址運算子，淡季沒有必要也太過多餘:
+```c
+fptr1 = &square;
+```
+
+square函數顯示在程式堆疊的下方，這只是畫圖方便，實際上函數是位在記憶體中的另一個區塊而非程式堆疊中。
+![Figure 3-10](./Fig/Figure3-10.png)
+
+將函數指標宣告為型別會比較方便，如以下程式宣告了之前店義的函數指標，型別定義看起來有點怪，一般來說，型別定義的名稱是宣告的最後一個元素:
+```c
+typedef int (*funcptr)(int);
+...
+funcptr fptr2;
+fptr2 = square;
+printf("%d squared is %d\n",n, fptr2(n));
+```
+
+### 傳入函數指標
+傳入函數指標十分容易，只要在函數宣告參數的部分使用函數指標的宣告即可
+```c
+int add(int num1, int num2) {
+return num1 + num2;
+}
+int subtract(int num1, int num2) {
+return num1 - num2;
+}
+typedef int (*fptrOperation)(int,int);
+int compute(fptrOperation operation, int num1, int num2) {
+    return operation(num1, num2);
+}
+```
+
+上面函數的使用方式如下:
+```c
+printf("%d\n",compute(add,5,6));  // 輸出11
+printf("%d\n",compute(sub,5,6));  // 輸出-1
+```
+
+add與sub函數的位址傳入了compute函數，這些位址用來呼叫對應的運算
+
+### 傳回函數指標
+要傳回函數指標必須將函數的傳回值宣告為函數指標，為了示範這個功能，將重複使用之前的add與sub函數以及型別宣告。下述的select函數會根據輸入的字元傳回對應的函數指標，依據opcode傳回add或sub函數的指標。
+```c
+fptrOperation select(char opcode) {
+    switch(opcode) {
+        case '+': return add;
+        case '-': return subtract;
+    }
+}
+```
+
+以下的evaluate函數將之前的範例合而為一，函數需要兩個整數與一個表示需要執行的運算字元，將opcode傳入select函數，取得對應要執行的函數指標，在return命令中，執行函數並傳回結果:
+```c
+int evaluate(char opcode, int num1, int num2) {
+    fptrOperation operation = select(opcode);
+    return operation(num1, num2);
+}
+```
+
