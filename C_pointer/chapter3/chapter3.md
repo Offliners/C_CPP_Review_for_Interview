@@ -431,3 +431,77 @@ int evaluate(char opcode, int num1, int num2) {
 }
 ```
 
+以下是函數的使用範例:
+```c
+printf("%d\n",evaluate('+', 5, 6));  // 輸出11
+printf("%d\n",evaluate('-', 5, 6));  // 輸出-1
+```
+
+### 使用函數指標的範例
+使用函數指標陣列可以依據條件選擇對應執行的函數，陣列的宣告十分直覺，只要把函數指標的宣告作為陣列的型別就好，以下範例將陣列中的元素都初始化為NULL，使用初始值區塊初始化陣列時，會將所有元素填滿相同數值，因此範例陣列中剩下的其他元素都會初始化為NULL:
+```c
+typedef int (*operation)(int, int);
+operation operations[128] = {NULL};
+```
+
+不使用typedef指令可以寫成如以下的形式:
+```c
+int (*operations[128])(int, int) = {NULL};
+```
+
+目的是希望能利用字元作為索引選擇對應執行的函數。例如，當對應的乘法函數存在時，「*」字元會執行乘法函數，能使用自元作為索引的原因在於字元是整數值，陣列的128個位置分別對應到128個ASCII字元，接下來將結合以上的陣列宣告以及上一節中的add與sub函數。
+
+將陣列初始化為NULL之後，接下來將add與sub函數與對應的加法、減法字元結合:
+```c
+void initializeOperationsArray() {
+    operations['+'] = add;
+    operations['-'] = subtract;
+}
+```
+
+將之前的evaluate函數改寫成evaluateArray，直接使用operations搭配operation字元作為索引，不再透過select函數取得對應的函數指標:
+```c
+int evaluateArray(char opcode, int num1, int num2) {
+    fptrOperation operation;
+    operation = operations[opcode];
+    return operation(num1, num2);
+}
+```
+
+以下測試程式:
+```c
+initializeOperationsArray();
+printf("%d\n",evaluateArray('+', 5, 6));  // 輸出11
+printf("%d\n",evaluateArray('-', 5, 6));  // 輸出-1
+```
+
+要使evaluateArray函數更安全，應該在執行函數前先檢查函數指標是否為NULL。
+
+### 比較函數指標
+函數指標可以比較是否相等:
+
+add函數指派給ftpr1函數指標，再與add函數的位址比較
+```c
+fptrOperation fptr1 = add;
+if(fptr1 == add) {
+    printf("fptr1 points to add function\n");
+} else {
+    printf("fptr1 does not point to add function\n");
+}
+```
+
+執行時可以從輸出看出指標指向add函數。
+
+### 函數指標轉型
+函數指標能夠轉型成其他型別，使用上要十分小心，執行期環境不會檢查轉型前後是否一致。也可以將函數指標轉型為其他型別後再轉回來原來的型別，最後的結果應該與原先的指標相等。以下是轉型的例子:
+```c
+typedef int (*fptrToSingleInt)(int);
+typedef int (*fptrToTwoInts)(int,int);
+int add(int, int);
+fptrToTwoInts fptrFirst = add;
+fptrToSingleInt fptrSecond = (fptrToSingleInt)fptrFirst;
+fptrFirst = (fptrToTwoInts)fptrSecond;
+printf("%d\n",fptrFirst(5,6));  // 輸出11
+```
+
+※ 函數指標與資料指標間的轉換不保證一定能成功。
