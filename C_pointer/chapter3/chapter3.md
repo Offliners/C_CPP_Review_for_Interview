@@ -1,4 +1,4 @@
-## Chatper 3 - 指標與函數
+# Chatper 3 - 指標與函數
 ### 程式堆疊
 程式堆疊是支援函數執行的記憶體區塊，通常與堆積共用，有就是兩者共享相同的記憶體區域。一般而言程式堆疊占用下半區域，堆積則使用上半部區域。
 
@@ -505,3 +505,26 @@ printf("%d\n",fptrFirst(5,6));  // 輸出11
 ```
 
 ※ 函數指標與資料指標間的轉換不保證一定能成功。
+
+void* 不一定能夠與函數指標一同使用，也就是不該如以下程式將函數指派給void*指標:
+```c
+void* pv = add;
+```
+
+在互換函數指標時常會看到某個「基本」函數指標型別，宣告方式如下，fptrBase是個指向參數與傳回值都是void的函數指標。
+```c
+typedef void (*fptrBase)();
+```
+
+以下是基本指標的使用方式:
+```c
+fptrBase basePointer;
+fptrFirst = add;
+basePointer = (fptrToSingleInt)fptrFirst;
+fptrFirst = (fptrToTwoInts)basePointer;
+printf("%d\n",fptrFirst(5,6));
+```
+
+基本指標是交換函數指標時的暫存變數。
+
+※ 每次都要小心檢查函數指標的參數列正確，否則會造成無法預期的行為。
