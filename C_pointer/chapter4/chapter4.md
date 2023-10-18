@@ -196,3 +196,36 @@ char* getLine(void) {
 在while迴圈中會毒入第一個字元，如果是換行字元，就會離開迴圈，接著，利用if命令判斷是否超過buffer的容許大小，未超過容許大小就會將讀入的字元加在緩衝區最後的位置。
 
 如果達到緩衝區空間的大小，使用realloc函數建立新的記憶體區塊會比園區塊增加sizeIncrement位元組的空間，如果無法配置新區塊則是放原有緩衝區，強制結束函數傳回NULL。否則，調整currentPosition到新緩衝區中適當的位置，並將buffer變數指向新配置的緩衝區。realloc函數不一定會將記憶體配置在原來的位置，因此必須使用函數傳回的指標作為新的、調整過大小的記憶體區塊。
+
+newBuffer變數持有新配置的記憶體區塊位址，為了處理realloc無法配置記憶體的情況，必須使用獨立的變數，而非重複使用buffer變數，才能夠偵測與處理無法配置記憶體的情況。
+
+因為realloc函數會將原記憶體區塊的資料複製到新的區塊的位置，並釋放掉原來的區塊，因此不需要再釋放舊有的緩衝區。如果程式中試著釋放buffer，通常會造成應用程式終止，因為程式重複釋放相同的記憶體區塊。
+
+下圖是getLine函數接受「Once upon a time there was a giant pumpkin」的記憶體配置情況，圖中緩衝的四個方框代表緩衝區況展了四次。
+![Figure 4-6](./Fig/Figure4-6.png)
+
+realloc函數也可以用來減少指標使用的記憶體空間，接下來的trim函數會移除字串開頭的空間字元。
+```c
+char* trim(char* phrase) {
+    char* old = phrase;
+    char* new = phrase;
+    while(*old == ' ') {
+        old++;
+    }
+    while(*old) {
+        *(new++) = *(old++);
+    }
+    *new = 0;
+    return (char*) realloc(phrase,strlen(phrase)+1);
+}
+int main() {
+    char* buffer = (char*)malloc(strlen(" cat")+1);
+    strcpy(buffer," cat");
+    printf("%s\n",trim(buffer));
+}
+```
+
+第一個while迴圈使用old變數略過開頭所有的空白字元，第二個while迴圈將剩餘的字元複製到字串的開頭，迴圈會持續執行遇到字串的終止字元，再使用realloc根據新的字串長度重新配置記憶體。
+
+下圖顯示了對原始字串「  cat」使用這個函數後的記憶體配置情況，以灰底標記的記憶體是原先的記憶體，不該再被存取。
+![Figure 4-7](./Fig/Figure4-7.png)
