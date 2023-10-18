@@ -229,3 +229,44 @@ int main() {
 
 下圖顯示了對原始字串「  cat」使用這個函數後的記憶體配置情況，以灰底標記的記憶體是原先的記憶體，不該再被存取。
 ![Figure 4-7](./Fig/Figure4-7.png)
+
+### 傳遞一維陣列
+當一維陣列傳入函數時，陣列位址以傳值的方式傳入，能讓資訊傳送更有效率，不需要為了傳送整個陣列的資料，在堆疊配置放置陣列內容的記憶體。
+
+```c
+void displayArray(int arr[], int size) {
+    for (int i = 0; i < size; i++) {
+        printf("%d\n", arr[i]);
+    }
+}
+
+int vector[5] = {1, 2, 3, 4, 5};
+displayArray(vector, 5);
+```
+
+執行時會依序輸出1到5的數字，程式將5傳入函數提供陣列大小資訊，也可以傳入任何整數，函數會根據輸入的大小輸出對應的元素數量，並不是檢查提供的大小是否正確，如果試著存取陣列邊界之外的記憶體可能會造成程式終止。
+
+![Figure 4-8](./Fig/Figure4-8.png)
+
+※ 以下是使用sizeof運算子判斷陣列元素個數時常見的錯誤，在這個例子中，會變成傳入20作為陣列大小:
+```c
+displayArray(arr, sizeof(arr));
+```
+
+宣告函數的陣列參數時並不一定需要使用中括號表示法，也可以如下列程式使用指標表示法:
+```c
+void displayArray(int* arr, int size) {
+    for (int i = 0; i < size; i++) {
+        printf("%d\n", arr[i]);
+    }
+}
+```
+
+函數內部依然能夠使用陣列表示法，依個人喜好，也可以在函數內使用指標表示法:
+```c
+void displayArray(int* arr, int size) {
+    for (int i = 0; i < size; i++) {
+        printf("%d\n", *(arr+i));
+    }
+}
+```
