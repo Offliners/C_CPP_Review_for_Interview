@@ -138,9 +138,55 @@ for(int i=0; i<5; i++) {
 }
 ```
 
-也可以用如下的指標表示法，然而，陣列表示髮看起來表較清楚:
+也可以用如下的指標表示法，然而，陣列表示法看起來表較清楚:
 ```c
 for(int i=0; i<5; i++) {
     *(pv+i) = i+1;
 }
 ```
+
+![Figure 4-5](./Fig/Figure4-5.png)
+
+這個技巧將配置的記憶體區塊視為陣列，大小在執行期間決定，然而，切記不使用資料時要釋放記憶體。
+
+※ 在之前的範例中使用*(pv+i)而非*pv+i，因為解參考比加法優先，第二個式子會先解參考指標，得到指標參照位址的數值，再將這個整數值加上i。此外，如果使用這個表示式作為lvalue，編譯器會發出錯誤訊息。因此，需要先強制執行加法，再作解參考院算，才能夠得到預期的數值。
+
+### 使用realloc函數改變陣列大小
+使用realloc函數能夠改變由malloc所建立的陣列大小。為了示範realloc函數，需要時做從標準輸入讀取字元，將讀取的字元指派至緩衝區的函數。緩衝區包含代表輸入結束的return字元外的所有字元，由於無法在事前知道使用者會輸入多少字元，無法決定緩衝區正確的大小，因此使用realloc函數讓緩衝區以固定大小成長。
+```c
+char* getLine(void) {
+    const size_t sizeIncrement = 10;
+    char* buffer = malloc(sizeIncrement);
+    char* currentPosition = buffer;
+    size_t maximumLength = sizeIncrement;
+    size_t length = 0;
+    int character;
+    if(currentPosition == NULL) { return NULL; }
+    while(1) {
+        character = fgetc(stdin);
+        if(character == '\n') { break; }
+        if(++length >= maximumLength) {
+            char *newBuffer = realloc(buffer, maximumLength += sizeIncrement);
+            if(newBuffer == NULL) {
+                free(buffer);
+            return NULL;
+            }
+            currentPosition = newBuffer + (currentPosition - buffer);
+            buffer = newBuffer;
+        }
+        *currentPosition++ = character;
+    }
+    *currentPosition = '\0';
+    return buffer;
+}
+```
+
+在getLine函數中有以下變數:
+|變數名稱|功用|
+|-|-|
+|sizeIncrement|緩衝區初始大小以及每次成長的大小|
+|buffer|指向讀取字元的指標|
+|currentPosition|指向緩衝區中下個字元存放位置的指標|
+|maximumLength|緩衝區終能安全存放的最大字元數|
+|length|已讀取的字元數|
+|character|目前讀入的字元|
