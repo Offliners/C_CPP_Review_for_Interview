@@ -311,3 +311,30 @@ for(int i=0; i<5; i++) {
 |arr[3][0]|3|
 
 ### 指標與多維陣列
+多維陣列中的部分能夠視為子陣列，例如，二維陣列中的每個列都能視為獨立的一維陣列:
+```c
+int matrix[2][5] = {{1,2,3,4,5},{6,7,8,9,10}};
+```
+
+以下程式顯示每個元素的位址及其中的數值:
+```c
+for(int i=0; i<2; i++) {
+    for(int j=0; j<5; j++) {
+        printf("matrix[%d][%d] Address: %p Value: %d\n", i, j, &matrix[i][j], matrix[i][j]);
+    }
+}
+```
+
+輸出結果:
+```shell
+matrix[0][0] Address: 100 Value: 1
+matrix[0][1] Address: 104 Value: 2
+matrix[0][2] Address: 108 Value: 3
+matrix[0][3] Address: 112 Value: 4
+matrix[0][4] Address: 116 Value: 5
+matrix[1][0] Address: 120 Value: 6
+matrix[1][1] Address: 124 Value: 7
+matrix[1][2] Address: 128 Value: 8
+matrix[1][3] Address: 132 Value: 9
+matrix[1][4] Address: 136 Value: 10
+```
