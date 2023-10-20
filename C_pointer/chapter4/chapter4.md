@@ -562,3 +562,99 @@ for (int i = 0; i < rows; i++) {
 無法使用陣列索引值的原因在於失去了陣列形狀的資訊，編譯器需要有這些資訊才能夠使用陣列索引。
 
 ### 不規則陣列與指標
+不規則陣列 (jagged array)是只各列大小不同的二維陣列。
+
+![Figure 4-18](./Fig/Figure4-18.png)
+
+在介紹如何建立這種陣列之前，先看看如何使用「複合常量 (compound literals)」建立二維陣列，複合常量是個C語言結構，由轉型運算子以及大括號包覆的初始化清單結合而成，以下分別是常數整數與整數陣列的複合常量，會出現在宣告的命令語句當中:
+```c
+(const int) {100}
+(int[3]) {10, 20, 30}
+```
+
+下列宣告建立了arr1陣列，宣告為整數指標的陣列，並使用複合常量的區塊命令初始化:
+```c
+int (*(arr1[])) = {
+    (int[]) {0, 1, 2},
+    (int[]) {3, 4, 5},
+    (int[]) {6, 7, 8}
+};
+```
+
+陣列有三列三行，陣列元素分別為0到8之間以列為主的順序初始化。
+
+![Figure 4-19](./Fig/Figure4-19.png)
+
+以下程式片段顯示每個元素的位址與數值:
+```c
+for(int j=0; j<3; j++) {
+    for(int i=0; i<3; i++) {
+        printf("arr1[%d][%d] Address: %p Value: %d\n", j, i, &arr1[j][i], arr1[j][i]);
+    }
+    printf("\n");
+}
+```
+
+輸出節果:
+```shell
+arr1[0][0] Address: 0x100 Value: 0
+arr1[0][1] Address: 0x104 Value: 1
+arr1[0][2] Address: 0x108 Value: 2
+
+arr1[1][0] Address: 0x112 Value: 3
+arr1[1][1] Address: 0x116 Value: 4
+arr1[1][2] Address: 0x120 Value: 5
+
+arr1[2][0] Address: 0x124 Value: 6
+arr1[2][1] Address: 0x128 Value: 7
+arr1[2][2] Address: 0x132 Value: 8
+```
+
+稍稍修改宣告就能夠用來建立不規則陣列:
+```c
+int (*(arr2[])) = {
+    (int[]) {0, 1, 2, 3},
+    (int[]) {4, 5},
+    (int[]) {6, 7, 8}
+};
+```
+
+使用三個複合常量宣告不規則陣列，陣列元素以列為主的順序從0開始依序初始化，以下程式會顯示陣列內容以驗證建立的方式，因為各列的元素數量不同，需要使用三個迴圈:
+```c
+int row = 0;
+for(int i=0; i<4; i++) {
+    printf("layer1[%d][%d] Address: %p Value: %d\n", row, i, &arr2[row][i], arr2[row][i]);
+}
+printf("\n");
+
+row = 1;
+for(int i=0; i<2; i++) {
+    printf("layer1[%d][%d] Address: %p Value: %d\n", row, i, &arr2[row][i], arr2[row][i]);
+}
+printf("\n");
+
+row = 2;
+for(int i=0; i<3; i++) {
+    printf("layer1[%d][%d] Address: %p Value: %d\n", row, i, &arr2[row][i], arr2[row][i]);
+}
+printf("\n");
+```
+
+輸出結果如下:
+```shell
+arr2[0][0] Address: 0x000100 Value: 0
+arr2[0][1] Address: 0x000104 Value: 1
+arr2[0][2] Address: 0x000108 Value: 2
+arr2[0][3] Address: 0x000112 Value: 3
+
+arr2[1][0] Address: 0x000116 Value: 4
+arr2[1][1] Address: 0x000120 Value: 5
+
+arr2[2][0] Address: 0x000124 Value: 6
+arr2[2][1] Address: 0x000128 Value: 7
+arr2[2][2] Address: 0x000132 Value: 8
+```
+
+![Figure 4-20](./Fig/Figure4-20.png)
+
+以上範例在存取陣列內容時都使用陣列表示法而非指標表示法，這讓程式較容易讀懂與理解，然而，指標表示法也一樣能夠正常運作。
