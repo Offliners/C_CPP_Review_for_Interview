@@ -348,7 +348,7 @@ matrix[1][4] Address: 136 Value: 10
 int (*pmatrix)[5] = matrix;
 ```
 
-(*)pmatrix表示式宣告了一個指向陣列的指標，結合宣告的其他部分，pmatrix定義為指向二維整數陣列的指標，每列有五個元素。如果去掉小括號，就會變成宣告一個五個元素的陣列，各元素是指向整數的指標。
+(*pmatrix)表示式宣告了一個指向陣列的指標，結合宣告的其他部分，pmatrix定義為指向二維整數陣列的指標，每列有五個元素。如果去掉小括號，就會變成宣告一個五個元素的陣列，各元素是指向整數的指標。
 
 如果想要用指標表示法存取第二個元素2，可以用以下的方式:
 ```c
@@ -373,3 +373,81 @@ printf("%p %d\n", matrix[0] + 1, *(matrix[0] + 1));  // 輸出會是104和2
 ```
 
 ![Figure 4-11](./Fig/Figure4-11.png)
+
+### 傳入多維陣列
+將多維陣列傳入函數很容易造成困擾，特別是使用指標表示法時。當傳入多維陣列，便需要決定在函數圓形中該使用陣列表示法或指標表示法；另一個需要考慮的要點是如何表達陣列的形狀，也就是陣列的維度數量以及各維度的大小。
+
+例如傳入matrix陣列時可以使用以下兩種宣告方式:
+```c
+// Method 1
+void display2DArray(int arr[][5], int rows) {
+    ...
+}
+
+// Method 2
+void display2DArray(int (*arr)[5], int rows) {
+    ...
+}
+```
+
+兩種方式都指定了行數，因為編譯器需要知道每列的元素個數。第一種方式中，arr[]隱含的意義是宣告了指向指標的陣列，第二種方式(*arr)則明確地將變數宣告為指標。
+
+※ 以下宣告無法如預期的方式運作:
+```c
+void display2DArray(int *arr[5], int rows) {
+    ...
+}
+```
+
+雖然不會產生語法錯誤，但傳入的陣列會被視為有五個整數指標元素的陣列。
+
+以下是函數的實作以及使用方式:
+```c
+void display2DArray(int arr[][5], int rows) {
+    for (int i = 0; i<rows; i++) {
+        for (int j = 0; j<5; j++) {
+            printf("%d", arr[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void main() {
+    int matrix[2][5] = {
+        {1, 2, 3, 4, 5},
+        {6, 7, 8, 9, 10}
+    };
+    display2DArray(matrix, 2);
+}
+```
+
+函數並沒有配置陣列使用的記憶體，指傳入了陣列位址。
+
+![Figure 4-13](./Fig/Figure4-13.png)
+
+有時候可能遇到如以下的函數宣告，接受一個指標以及行、列的數量:
+```c
+void display2DArrayUnknownSize(int *arr, int rows, int cols) {
+    for(int i=0; i<rows; i++) {
+        for(int j=0; j<cols; j++) {
+            printf("%d ", *(arr + (i*cols) + j));
+        }
+        printf("\n");
+    }
+}
+```
+
+printf命令將arr加上之前每列的元素數量(i*cols)，再加上j得到目標元素的位址，使用以下的方式呼叫這個函數:
+```c
+display2DArrayUnknownSize(&matrix[0][0], 2, 5);
+```
+
+在函數內部無法使用以下的陣列索引表示法取得個別元素:
+```c
+printf("%d ", arr[i][j]);
+```
+
+因為指標並非宣告為二維陣列，沒有辦法以這種方式取得。索引值會解釋成陣列中與第一個元素的位址差，只能夠使用一個索引值，不能夠使用兩個索引值的原因在於編譯器不知道個別維度的大小:
+```c
+printf("%d ", (arr+i)[j]);
+```
