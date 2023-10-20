@@ -497,3 +497,68 @@ display3DArray(arr3d, 3);
 ```c
 int matrix[2][5] = {{1,2,3,4,5},{6,7,8,9,10}};
 ```
+
+當使用如malloc等函數建立二維陣列時，有許多不同配置記憶體的方式。二維陣列被視為陣列的陣列，不會假設內部的陣列彼此互相連續，使用陣列表示法時，程式語言會自動處理陣列本身的不連續的特質。
+
+※ 陣列內容是否連續會影響其他運算，例如複製記憶體區塊，如果記憶體不連續，可能會需要複製多次。
+
+### 配置可能不連續的記憶體
+以下示範了一種配置二維陣列記憶體的方式，其中子陣列的記憶體並非連續:
+```c
+int rows = 2;
+int columns = 5;
+
+int **matrix = (int **) malloc(rows * sizeof(int *));
+
+for (int i = 0; i < rows; i++) {
+    matrix[i] = (int *) malloc(columns * sizeof(int));
+}
+```
+
+由於使用個別的malloc呼叫，配置的記憶體可能不會連續。
+
+![Figure 4-15](./Fig/Figure4-15.png)
+
+實際配置的記憶體位置是由堆積管理員以及堆積狀態而定，也有可能配置到連續的記憶體。
+
+### 配置連續記憶體
+以下介紹兩種以連續記體配置二維陣列的方式，第一種技巧先配置外部陣列，再一次配置所有元素所需要的記憶體；第二種方式則是一次配置所需要的記憶體。
+
+下列程式示範第一種作法:
+```c
+int rows = 2;
+int columns = 5;
+
+// 第一個malloc配置一個整數指標陣列，每個元素持有一列的資料
+int **matrix = (int **) malloc(rows * sizeof(int *));
+
+// 第二個malloc在位址600的位置配置了陣列所有元素所需要的記憶體空間
+matrix[0] = (int *) malloc(rows * columns * sizeof(int));
+for (int i = 1; i < rows; i++)
+    matrix[i] = matrix[0] + i * columns;
+```
+
+![Figure 4-16](./Fig/Figure4-16.png)
+
+一般而言，第一個陣列配置的記憶體會與陣列內容的記憶體分開，內容部分會位於連續的記憶體上。
+
+第二種做法如下，一次配置陣列所需要的所有記憶體:
+```c
+// 呼叫一次malloc配置連續記憶體 
+int *matrix = (int *)malloc(rows * columns * sizeof(int));
+```
+
+![Figure 4-17](./Fig/Figure4-17.png)
+
+後續程式使用陣列時，不能使用多維陣列索引的方式，必須手工計算在陣列中的位置，如同以下程式碼的示範，每個元素都初始化為索引值的乘積:
+```c
+for (int i = 0; i < rows; i++) {
+    for (int j = 0; j < columns; j++) {
+        *(matrix + (i*columns) + j) = i*j;
+    }
+}
+```
+
+無法使用陣列索引值的原因在於失去了陣列形狀的資訊，編譯器需要有這些資訊才能夠使用陣列索引。
+
+### 不規則陣列與指標
