@@ -338,3 +338,11 @@ matrix[1][2] Address: 128 Value: 8
 matrix[1][3] Address: 132 Value: 9
 matrix[1][4] Address: 136 Value: 10
 ```
+
+陣列主要是以列為主的方式儲存，也就是先依序儲存第一列的內容，接著再存放在第二列。
+![Figure 4-10](./Fig/Figure4-10.png)
+
+可以使用如下的方式以指標宣告陣列:
+```c
+int (*pmatrix)[5] = matrix;
+```
