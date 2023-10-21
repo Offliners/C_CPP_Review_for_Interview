@@ -143,3 +143,83 @@ scanf("%s", command);  // command變數使用前沒有指派可用記憶體
 
 要解決此問題，應該先為指標配置記憶體或使用固定大小的陣列而非指標。
 
+### 字串放置總結
+字串可能配置在幾個不同的地方:
+```c
+char* globalHeader = "Chapter";
+char globalArrayHeader[] = "Chapter";
+
+void displayHeader() {
+    static char* staticHeader = "Chapter";
+    char* localHeader = "Chapter";
+    static char staticArrayHeader[] = "Chapter";
+    char localArrayHeader[] = "Chapter";
+    char* heapHeader = (char*)malloc(strlen("Chapter")+1);
+    strcpy(heapHeader,"Chapter");
+}
+```
+
+![Figure 5-5](./Fig/Figure5-5.png)
+
+知道字串所在的位置有助於理解程式運作與使用指標存取字串，字串所在的位置決定了字串存續的時間以及應用程式中有能力存取字串的部分。例如，配置在全域記憶體的字串會一直存在。而且能被多個函數存取；靜態字串能夠持續存在卻只能在所定義的函數之內存取；配置在堆積的字串能夠存續到釋放之前，也能夠被多個函數使用，理解這些有助於在撰寫程式時做出更正確的決定。
+
+### 比較字串
+strcmp函數是比較字串的標準做法，原型如下:
+```c
+int strcmp(const char *s1, const char *s2);
+```
+
+比較的兩個字串都是以常數字元指標的方式傳入函數，使用者不需要擔心傳入的字串會受到修改，函數可能傳回三種數:
+* 負值
+    - s1位於s2之前 (以字母順序)
+* 零
+    - 兩個字串相等
+* 正值
+    - s1位於s2之後 (以字母順序)
+
+傳回正負值對於將字串依字母順序排序十分有用，以下是使用函數檢測是否相等:
+```c
+char command[16];
+
+printf("Enter a Command: ");
+scanf("%s", command);
+if (strcmp(command, "Quit") == 0) {
+    printf("The command was Quit");
+} else {
+    printf("The command was not Quit");
+}
+```
+
+![Figure 5-6](./Fig/Figure5-6.png)
+
+有幾種錯誤的字串比較方式，第一種是使用指派運算子比較兩個字串:
+```c
+char command[16];
+
+printf("Enter a Command: ");
+scanf("%s",command);
+
+// 這會產生型別不符的語法錯誤訊息，字串的位址無法指派給陣列名稱
+if(command = "Quit") {  
+    ...
+}
+```
+
+第二種錯誤是使用相等運算子
+```c
+char command[16];
+
+printf("Enter a Command: ");
+scanf("%s",command);
+
+// 比較結果永遠是否定的，因為比較的是command的位址300，與字串常量的位址600
+if(command == "Quit") {  
+    ...
+}
+```
+
+### 複製字串
+複製字串十分常見，一般是使用strcpy函數，函數原型如下:
+```c
+char* strcpy(char *s1, const char *s2);
+```
