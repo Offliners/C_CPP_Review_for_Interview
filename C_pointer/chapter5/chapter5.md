@@ -433,3 +433,137 @@ printf("%s\n", format(buffer, sizeof(buffer), "Axle", 25, 45));
 ```shell
 Item: Axle Quantity: 25 Weight: 45
 ```
+
+另一種方式是傳入NULL作為緩衝區位址，這表示呼叫端不想提供緩衝區或者不確定緩衝區大小；這個版本的函數可以實作如下，長度透過計算而得，10+10表示quantity與weight預期的最大長度，額外的1則是NUL終止字元:
+```c
+char* format(char *buffer, size_t size,
+    const char* name, size_t quantity, size_t weight) {
+    char *formatString = "Item: %s Quantity: %u Weight: %u";
+    size_t formatStringLength = strlen(formatString)-6;
+    size_t nameLength = strlen(name);
+    size_t length = formatStringLength + nameLength + 10 + 10 + 1;
+
+    if(buffer == NULL) {
+        buffer = (char*)malloc(length);
+        size = length;
+    }
+
+    snprintf(buffer, size, formatString, name, quantity, weight);
+    return buffer;
+}
+```
+
+這樣的改變能讓應用程式依據需要以不同的方式使用函數。這種做法最大的缺點是在第二種使用情境下，呼叫端必須負責釋放函數內部配置的記憶體，呼叫端必須很清楚地了解函數的使用方式，否則很容易就會產生記憶體洩漏。
+
+### 傳入應用程式參數
+C語言應用程式能夠支援命令列參數，這些參數一般都以argc與argv命令，第一個參數argc是整數，表示傳入的參數數量，至少會傳入一個參數，就是執行的應用程式名稱。第二個參數argv一般視為一維的字串指標陣列，每個指標參照到一個命令列參數。
+
+```c
+int main(int argc, char** argv) {
+    for(int i=0; i<argc; i++) {
+        printf("argv[%d] %s\n", i, argv[i]);
+    }
+    ...
+}
+```
+
+用以下命令列執行程式:
+```shell
+process.exe -f names.txt limit=12 -verbose
+```
+
+輸出結果:
+```shell
+argv[0] c:/process.exe
+argv[1] -f
+argv[2] names.txt
+argv[3] limit=12
+argv[4] -verbose
+```
+
+每個命令列參數以空格分隔:
+
+![Figure 5-13](./Fig/Figure5-13.png)
+
+argv的宣告可以簡化為如下:
+```c
+int main(int argc, char* argv[]) {  // 與char** argv等價
+    ...
+}
+```
+
+### 傳回字串
+當函數傳回字串時，是傳回字串的位址，關鍵在於傳回合法的字串位址，因此傳回的位址必須滿足以下條件之一:
+* 字串常量
+* 動態配置記憶體
+* 區域字串變數
+
+### 傳回字串常量位址
+以下是傳回字串常量的範例，依據整數code從四個處理中心傳回對應的字串常量。函數的目的是以字串傳回處理中心的名稱:
+```c
+char* returnALiteral(int code) {
+    switch(code) {
+        case 100:
+            return "Boston Processing Center";
+        case 200:
+            return "Denver Processing Center";
+        case 300:
+            return "Atlanta Processing Center";
+        case 400:
+            return "San Jose Processing Center";
+    }
+}
+```
+
+函數能夠正常的運作，只是要記得字串常量並不是常數。也可以如下範例定義靜態常量，加入額外的subCode欄位進一步選擇不同的處理中心，這個方式的優點是不會在多個地方重複使用相同的常量，在不同地方使用相同常量可能會因為打字錯誤而造成錯誤:
+```c
+char* returnAStaticLiteral(int code, int subCode) {
+    static char* bpCenter = "Boston Processing Center";
+    static char* dpCenter = "Denver Processing Center";
+    static char* apCenter = "Atlanta Processing Center";
+    static char* sjpCenter = "San Jose Processing Center";
+    switch(code) {
+        case 100:
+            return bpCenter;
+        case 135:
+            if(subCode <35) {
+                return dpCenter;
+            } else {
+                return bpCenter;
+            }
+        case 200:
+            return dpCenter;
+        case 300:
+            return apCenter;
+        case 400:
+            return sjpCenter;
+    }
+}
+```
+
+傳回用於多重目的的靜態字串指標可能會造成問題，如format函數的變型。原料的資訊傳入函數，函數則會傳回格式化後的字串:
+```c
+char* staticFormat(const char* name, size_t quantity, size_t weight) {
+    static char buffer[64];  // 假設空間足夠
+    sprintf(buffer, "Item: %s Quantity: %u Weight: %u", name, quantity, weight);
+    return buffer;
+}
+```
+
+buffer配置了64個位元組，可能不夠，作為範例暫時忽略這個問題。以下範例是這個做法主要的問題:
+```c
+char* part1 = staticFormat("Axle",25,45);
+char* part2 = staticFormat("Piston",55,5);
+printf("%s\n",part1);
+printf("%s\n",part2);
+```
+
+執行時會產生以下的輸出:
+```shell
+Item: Piston Quantity: 55 Weight: 5
+Item: Piston Quantity: 55 Weight: 5
+```
+
+由於staticFormat函數在兩次呼叫時使用的是相同的靜態緩衝區，第二次呼叫函數會覆蓋第一次的結果。
+
+### 傳回動態配置記憶體位址
