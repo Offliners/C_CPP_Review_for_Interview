@@ -132,3 +132,40 @@ int main() {
         ...
 }
 ```
+
+![Figure 6-3](./Fig/Figure6-3.png)
+
+由於宣告在函數內部，當函數結束後person的記憶體也隨著被釋放，但動態配置的記憶體並不會被釋放，會持續佔據堆積。此時已失去記憶體位址，沒有辦法釋放記憶體，會造成記憶體洩漏。
+
+處理完這個實體後，需要釋放記憶體，以下函數會釋放先前建立實體時配置的記憶體:
+```c
+void deallocatePerson(Person *person) {
+    free(person->firstName);
+    free(person->lastName);
+    free(person->title);
+}
+```
+
+這個函數必須在外部函數結束之前呼叫:
+```c
+void processPerson() {
+    Person person;
+    initializePerson(&person, "Peter", "Underwood", "Manager", 36);
+        ...
+    deallocatePerson(&person);
+}
+```
+
+如果使用Person指標，需要記得使用以下方式釋放person:
+```c
+void processPerson() {
+    Person *ptrPerson;
+    ptrPerson = (Person*) malloc(sizeof(Person));
+    initializePerson(ptrPerson, "Peter", "Underwood", "Manager", 36);
+        ...
+    deallocatePerson(ptrPerson);
+    free(ptrPerson);
+}
+```
+
+![Figure 6-4](./Fig/Figure6-4.png)
