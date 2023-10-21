@@ -288,3 +288,58 @@ Not enough memory
 ```
 
 ![Figure 5-9](./Fig/Figure5-9.png)
+
+如果沒有另行配置記憶體供連結後的字串使用，就會覆蓋第一個字串內容，如同以下沒有使用緩衝區的範例，同樣也假設兩個字串常量在記憶體中是緊鄰著存放:
+```c
+char* error = "ERROR: ";
+char* errorMessage = "Not enough memory";
+
+strcat(error, errorMessage);
+
+printf("%s\n", error);
+printf("%s\n", errorMessage);
+```
+
+輸出結果:
+```shell
+ERROR: Not enough memory
+ot enough memory
+```
+
+errorMessage字串位置往左移了一個字元，因為連結字串的結果覆蓋了errorMessage的內容，由於常量「Not enough memory」的位置緊鄰第一個常量，第二個常量的內容會被覆蓋:
+
+![Figure 5-10](./Fig/Figure5-10.png)
+
+也可以使用陣列而非指標存放這些訊息，如以下程式:
+```c
+char error[] = "ERROR: ";
+char errorMessage[] = "Not enough memory";
+```
+
+如果使用以下的方式呼叫strcpy將會造成語法錯誤，因為試著將由韓數傳回的指標指派給陣列的名稱，是不合法的操作:
+```c
+error = strcat(error, errorMessage);
+```
+
+移除指派命令讓程式變成以下的形式:
+```c
+strcat(error, errorMessage);
+```
+
+可能會造成記憶體存取問題，因為複製操作會負寫掉部分的堆疊框架，假設陣列是宣告在函數當中。不論字串來自於字串常量池或是堆疊框架，都不應該直接用於存放連結後的結果。切記為連結結果配置專用的記憶體。
+
+![Figure 5-11](./Fig/Figure5-11.png)
+
+另一個字串連結常見的錯誤是使用字元常量而非字串常量，以下範例將字串連結道路徑字串，能以預期的行為執行:
+```c
+char* path = "C:";
+char* currentPath = (char*) malloc(strlen(path)+2);
+currentPath = strcat(currentPath,"\\");
+```
+
+呼叫malloc時在字串長度加上2，因為需要空間供額外的字元與NUL字元，程式連結了單一字元與反斜線，第二個字串常量使用了跳脫字元。
+
+如果使用字元常量，如以下程式，會造成執行期錯誤，因為第二個參數會被解讀成char的位址:
+```c
+currentPath = strcat(path,'\\');
+```
