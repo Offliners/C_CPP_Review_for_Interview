@@ -223,3 +223,42 @@ if(command == "Quit") {
 ```c
 char* strcpy(char *s1, const char *s2);
 ```
+
+常見的應用是讀取一連串的字串，再將字串分別儲存在陣列中以減少記憶體的使用量。要達成這個要求需要建立一個能儲存使用者最常輸入字串的陣列，將使用者輸入的字串先讀到陣列中，一旦成功的讀取字串，再根據字串長度配置正確的記憶體，流程如下:
+1. 使用大的字元陣列讀入字串
+2. 使用malloc配置正確數量的記憶體
+3. 使用strcpy將字串複製到動態配置的記憶體
+
+以下程式碼示範了上述流程，names陣列持有每個讀入姓名的指標，count變數標記了下個可使用的陣列元素，names陣列則用於存放毒入的字串，每個讀取姓名時都會重複使用。malloc函數依據每次讀入的字串長度配置足夠的記憶體，並將指標指派到names陣列中下個可用元素，接著再將name的內容複製到配置的記憶體中:
+```c
+char name[32];
+char *names[30];
+size_t count = 0;
+
+printf("Enter a name: ");
+scanf("%s",name);
+names[count] = (char*)malloc(strlen(name)+1);
+strcpy(names[count],name);
+count++;
+```
+
+可以用迴圈重複這個過程，每個循環遞增count值。
+
+![Figure 5-7](./Fig/Figure5-7.png)
+
+兩個指標可以參考到相同的字串，當兩個指標參考到同一字串時稱為別名 (aliasing)。雖然這不一定會造成問題，但必須要知道將一個指標指派給另一個指標並不會複製字串，只是複製字串的位址而已。
+
+以下程式讓兩個指標參照到相同的字串常量，複製的是指標而非字串:
+```c
+char *pageHeaders[300];
+pageHeaders[12] = "Amorphous Compounds";
+pageHeaders[13] = pageHeaders[12];
+```
+
+![Figure 5-8](./Fig/Figure5-8.png)
+
+### 連結字串
+字串連結會合併兩個字串，strcat常用於這項操作，這個函數接受兩個要連結的字串，傳回一個指向連結後結果的指標，函數原型為:
+```c
+char *strcat(char *s1, const char *s2);
+```
