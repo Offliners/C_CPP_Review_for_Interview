@@ -54,3 +54,33 @@ const char *tabHeader = "Sound";
 ```
 
 ### 字串初始化
+字串陣列能夠以初始化運算子初始化，以下範例中，header陣列以字串常量中的字元初始化:
+```c
+char header[] = "Media Player";
+```
+
+由於"Media Player"字串常量有12個字元長，總共需要13個位元組來表示整個常量。陣列會配置13個位元組已持有字串內容，初始化會初始內容字元以及結尾的NUL字元到陣列中。
+
+![Figure 5-2](./Fig/Figure5-2.png)
+
+陣列可以使用strcpy函數初始化，以下程式將字串常量複製到陣列:
+```c
+char header[13];
+strcpy(header,"Media Player");
+```
+
+較繁瑣的方式是如以下程式逐一指派個別字元:
+```c
+header[0] = 'M';
+header[1] = 'e';
+    ...
+header[12] = '\0';
+```
+
+※ 以下的指派命令不合法，無法將字串常量指派給陣列名稱:
+```c
+char header2[];
+header2 = "Media Player";
+```
+
+### 初始化字元指標
