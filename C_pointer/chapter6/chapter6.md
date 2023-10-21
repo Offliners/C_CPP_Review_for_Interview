@@ -169,3 +169,66 @@ void processPerson() {
 ```
 
 ![Figure 6-4](./Fig/Figure6-4.png)
+
+### 避免malloc/free的負擔
+重複配置與釋放結構時產生額外的負擔，可能會明顯影響效能。處理方式是自行維護配置結構的串列，不再需要某個結構實體時，將實體歸還給暫存池，需要新實體時，從暫存池中取得物件，如果暫存池中沒有可供使用的實體，就會自動配置新的實體，這個方式有效維護能在需要時被重複使用的結構實體。
+
+以下使用先前定義的Person結構示範這個技巧，暫存池中的實體以陣列的方式維護，也可以使用更複雜的資料結構，如串列。
+```c
+#define LIST_SIZE 10
+Person *list[LIST_SIZE];
+```
+
+在陣列能夠被正確使用前必須先初始化，以下函數將陣列中每個元素都指派為NULL:
+```c
+void initializeList() {
+    for(int i=0; i<LIST_SIZE; i++) {
+        list[i] = NULL;
+    }
+}
+```
+
+還需要兩個取得與歸還Person的函數，首先是getPerson函數，函數會先從list找尋是否有可以使用的實體，陣列中的元素與NULL比較，傳會第一個非空的指標，再將其位置指派為NULL。如果沒有可供使用的實體，會建立新的Person實體並回傳，這樣能避免每次需要新實體時動態配置的負載，只需要在暫存池中沒有可供使用的實體時再配置就行了。實體回傳前可以先初始化，或是由呼叫者初始化:
+```c
+Person *getPerson() {
+    for(int i=0; i<LIST_SIZE; i++) {
+        if(list[i] != NULL) {
+            Person *ptr = list[i];
+            list[i] = NULL;
+            return ptr;
+        }
+    }
+    Person *person = (Person*)malloc(sizeof(Person));
+    return person;
+}
+```
+
+第二個函數是returnPerson，會將歸還的person實體放回list中或是釋放。會檢查陣列中是否還有任何NULL元素，如果還有NULL元素，就將歸還的實體指派給這個位置，如果list已經沒有空間再容納多餘的實體時，就使用deallocatePerson釋放結構中的欄位，再釋放person，最後則傳回NULL:
+```c
+Person *returnPerson(Person *person) {
+    for(int i=0; i<LIST_SIZE; i++) {
+        if(list[i] == NULL) {
+            list[i] = person;
+            return person;
+        }
+    }
+    deallocatePerson(person);
+    free(person);
+    return NULL;
+}
+```
+
+以下示範初始化list並加入一個person實體的過程:
+```c
+initializeList();
+Person *ptrPerson;
+
+ptrPerson = getPerson();
+initializePerson(ptrPerson, "Ralph", "Fitsgerald", "Mr.", 35);
+displayPerson(*ptrPerson);
+returnPerson(ptrPerson);
+```
+
+這個方法的問題之一是list的空間大小，空間太小就會需要比較多的配置與釋放記憶體；空間太大，結構也沒被使用，則可能會佔據大量記憶體無法供其他用途使用，可以使用更為成熟的串列管理機制維護使用空間的大小。
+
+### 使用指標支援資料結構
