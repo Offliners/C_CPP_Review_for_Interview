@@ -350,6 +350,8 @@ currentPath = strcat(path,'\\');
 
 下述範例，函數中利用小括號強制讓後遞增運算子先執行，移動指標的位置。由於後遞增運算子得的優權比解參考運算子還高，小括號並非絕對必要，但加上小括號能更明確的表明程式設計師的意圖。
 ```c
+// 也可以將參數使用陣列表示法
+// size_t stringLength(char string[])
 size_t stringLength(char* string) {
     size_t length = 0;
     while(*(string++)) {
@@ -381,3 +383,53 @@ printf("%d\n",stringLength(&simpleArray[0]));
 ```
 
 ![Figure 5-12](./Fig/Figure5-12.png)
+
+### 傳入字元常數指標
+將字串的指標以字元常數指標的方式傳入是十分常見與實用的技巧，這個技巧將字傳以指標傳入，同時避免傳入的字串被修改:
+```c
+size_t stringLength(const char* string) {
+    size_t length = 0;
+    while(*(string++)) {
+        length++;
+    }
+    return length;
+}
+```
+
+如下以下程式在韓數內修改原始字串，就會產生編譯期錯誤:
+```c
+size_t stringLength(const char* string) {
+        ...
+    *string = 'A';
+        ...
+}
+```
+
+### 傳入待初始化字串
+有時會希望韓數傳回由函數初始化的字串，例如:可能會需要傳入部分資訊，如名稱與數量，再由函數傳回將這些資訊格式化後的字串。將格式化程序隱藏在函式內部，便能重複使用在不同的地方。
+
+當緩衝區由外部傳入時:
+* 必須傳入緩衝區位址及其大小
+* 呼叫端必須負責釋放緩衝區
+* 函數一般會傳回指向緩衝區的指標
+
+這種方式讓呼叫端負責緩衝區的配置與釋放；傳回指向緩衝區的指標是非必要的慣例行為，與strcpy等函數一致。以下是採用這種做法的format函數實作範例:
+```c
+char* format(char *buffer, size_t size, const char* name, size_t quantity, size_t weight) {
+    snprintf(buffer, size, "Item: %s Quantity: %u Weight: %u", name, quantity, weight);
+    return buffer;
+}
+```
+
+
+這個範例以snprintf作為格式化字串的方式，函數會寫入第一個參數指定的緩衝區，第二個參數指定緩衝區大小，這個函數並不會寫入超過緩衝區末端的位置，函數的其他行為則與print相同。
+
+以下示範了函數的使用方式:
+```c
+printf("%s\n", format(buffer, sizeof(buffer), "Axle", 25, 45));
+```
+
+輸出結果:
+```shell
+Item: Axle Quantity: 25 Weight: 45
+```
