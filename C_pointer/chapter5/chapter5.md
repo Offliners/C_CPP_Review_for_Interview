@@ -595,3 +595,106 @@ free(tmp);
 ```
 
 ### 傳回區域字串位址
+傳回區域字串位址會造成問題，因為其他的堆疊框架覆寫記憶體後會毀損原有的資料，應該避免使用這種方式。
+
+以下重新時做了blanks函數，動態配置記憶體改為在函數內宣告陣列，陣列會位於堆疊框架中，函數傳回陣列的位址:
+```c
+#define MAX_TAB_LENGTH 32
+
+char* blanks(int number) {
+    char spaces[MAX_TAB_LENGTH];
+    int i;
+    for (i = 0; i < number && i < MAX_TAB_LENGTH; i++) {
+        spaces[i] = ' ';
+    }
+    spaces[i] = '\0';
+    return spaces;
+}
+```
+
+當函數執行時會傳回字串位址，但記憶體所在的區域會被呼叫後續呼叫的函數覆蓋，解參考指標時，記憶體位址的內容可能會被改變。
+
+![Figure 5-15](./Fig/Figure5-15.png)
+
+### 函數指標與字串
+範例中的比較函數會依據陣列元素的大小寫排序，以下的兩個函數compare和compareIgnoreCase，會比較兩個字串大小，compareIgnoreCase函數會將字串先轉換為小寫，再使用strcmp比較字串大小:
+```c
+int compare(const char* s1, const char* s2) {
+    return strcmp(s1,s2);
+}
+
+int compareIgnoreCase(const char* s1, const char* s2) {
+    // stringToLower 函數傳回動態配置記憶體的指標，也就是不再需要使用時，必須釋放記憶體
+    char* t1 = stringToLower(s1);  
+    char* t2 = stringToLower(s2);
+    int result = strcmp(t1, t2);
+    free(t1);
+    free(t2);
+    return result;
+}
+```
+
+stringToLower字串的實作如下，會傳回傳入字串中所有字元都轉換為小寫後的版本:
+```c
+char* stringToLower(const char* string) {
+    char *tmp = (char*) malloc(strlen(string) + 1);
+    char *start = tmp;
+    while (*string != 0) {
+        *tmp++ = tolower(*string++);
+    }
+    *tmp = 0;
+    return start;
+}
+```
+
+用於比對的函數指標透過型別定義宣告如下:
+```c
+typedef int (fptrOperation)(const char*, const char*);
+```
+
+以下的排序函數以泡沫排序演算法 (bubble sort algorithm)實作，傳入陣列位址、陣列大小以及控制比較方式的函數指標。在if命令中，呼叫傳入的函數比較陣列中的兩個元素，決定這兩個元素位置是否需要交換:
+```c
+void sort(char *array[], int size, fptrOperation operation) {
+    int swap = 1;
+    while(swap) {
+        swap = 0;
+        for(int i=0; i<size-1; i++) {
+            if(operation(array[i],array[i+1]) > 0){
+                swap = 1;
+                char *tmp = array[i];
+                array[i] = array[i+1];
+                array[i+1] = tmp;
+            }
+        }
+    }
+}
+```
+
+以下函數用於顯示陣列內容:
+```c
+void displayNames(char* names[], int size) {
+    for(int i=0; i<size; i++) {
+        printf("%s ",names[i]);
+    }
+    printf("\n");
+}
+```
+
+呼叫排序函數實可使用上列任何一個比較函數，以下是使用compare函數，以考慮大小寫的方式排序:
+```c
+char* names[] = {"Bob", "Ted", "Carol", "Alice", "alice"};
+sort(names, 5, compare);
+displayNames(names, 5);
+```
+
+輸出如下:
+```shell
+Alice Bob Carol Ted alice
+```
+
+如果使用compareIgnoreCase函數，則會輸出如下:
+```shell
+Alice alice Bob Carol Ted
+```
+
+這讓排序函數更加有彈性，現在可以根據排序方式的需求，實作各種不同的比較函數，而不是重新實作不同的sort函數。
