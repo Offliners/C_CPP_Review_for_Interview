@@ -567,3 +567,31 @@ Item: Piston Quantity: 55 Weight: 5
 由於staticFormat函數在兩次呼叫時使用的是相同的靜態緩衝區，第二次呼叫函數會覆蓋第一次的結果。
 
 ### 傳回動態配置記憶體位址
+如果需要從函數傳回字串，可以在堆積中配置字串所需的記憶體，再傳回該記憶體位址。以下blanks函數示範了這個技巧，函數傳回了一連串的空格以表示一次的跳位，函數接受一個整數表示跳位對應的空白個數:
+```c
+char* blanks(int number) {
+    char* spaces = (char*) malloc(number + 1);
+    int i;
+    for (i = 0; i<number; i++) {
+        spaces[i] = ' ';
+    }
+    spaces[number] = '\0';  // NUL被指派為陣列的最後一個元素
+    return spaces;
+}
+```
+
+![Figure 5-14](./Fig/Figure5-14.png)
+
+函數的呼叫者必須負責釋放傳回的記憶體，否則會產生記憶體洩漏。以下程式會產生記憶體洩漏，將傳回的字串作為printf函數的呼叫，沒有儲存傳回的位址，之後就沒有辦法再存取到該記憶體:
+```c
+printf("[%s]\n", blanks(5));
+```
+
+以下是比較安全的作法:
+```c
+char *tmp = blanks(5);
+printf("[%s]\n", tmp);
+free(tmp);
+```
+
+### 傳回區域字串位址
