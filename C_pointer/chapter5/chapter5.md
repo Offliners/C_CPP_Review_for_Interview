@@ -84,3 +84,62 @@ header2 = "Media Player";
 ```
 
 ### 初始化字元指標
+使用動態記憶體配置有較大的彈性，也可以讓記憶體存活較長的時間:
+```c
+char *header;
+```
+
+一般用來初始化字串的方式利用了malloc與strcpy函數配置記憶體並將常量複製到字串:
+```c
+char *header = (char*) malloc(strlen("Media Player")+1);
+strcpy(header,"Media Player");
+```
+
+![Figure 5-3](./Fig/Figure5-3.png)
+
+上述範例使用malloc函數時，透過strlen函數與字串常量計算出字串的長度，也可以像以下的程式直接指定字串長度:
+```c
+char *header = (char*) malloc(13);
+```
+
+※ 在計算malloc函數使用的字串長度時:
+* 總是加上一個供NUL終止字元使用
+* 不要使用sizeof運算子，應該使用strlen函數取得原有字串的長度，sizeof運算子會傳回陣列或指標的大小，而非字串長度
+
+如果不使用字串常量與strcpy函數初始化字串，也可以使用以下方式:
+```c
+*(header + 0) = 'M';
+*(header + 1) = 'e';
+    ...
+*(header + 12) = '\0';
+```
+
+可以直接將字串常量的位址指派給字元指標，如以下程式，這並不會建立新的字串:
+```c
+char *header = "Media Player";
+```
+
+![Figure 5-4](./Fig/Figure5-4.png)
+
+※ 不能以字元常量初始化字元指標，字元常量的型別為int，編譯器會解讀成將整數指派給字元指標，這種作法會在解參考指標時造成應用程式終止:
+```c
+char* prefix = '+';  // 不合法
+```
+
+以下是使用malloc函數的正確做法:
+```c
+prefix = (char*)malloc(2);
+*prefix = '+';
+*(prefix+1) = 0;
+```
+
+### 透過標準輸入初始化字串
+字串也可以透過外部資料來初始化，例如標準輸入，從標準輸入讀取字串可能發生初始化錯誤，例如以下程式碼:
+```c
+char *command;
+printf("Enter a Command: ");
+scanf("%s", command);  // command變數使用前沒有指派可用記憶體
+```
+
+要解決此問題，應該先為指標配置記憶體或使用固定大小的陣列而非指標。
+
