@@ -262,3 +262,29 @@ pageHeaders[13] = pageHeaders[12];
 ```c
 char *strcat(char *s1, const char *s2);
 ```
+
+函數將第二個字串連接再第一個字串的尾端，第二個字串以常數字元指標的方式傳入，函數並不會配置記憶體，這表示第一個參數必須擁有足夠放置連結後結果的空間，否則就會寫入字串結尾之後，造成不可預期的行為。函數傳回的位址與第一個參數的位址相同，這樣的行為在某些情形十分方便，例如將函數作為printf函數的參數。
+
+以下結合兩個錯誤訊息字串示範函數的使用，第一個字串是前綴，第二個字串是明確的錯誤訊息。程式中首先需要配置足夠放置兩個字串的緩衝區，再將第一個字串複製到緩衝區，最後將第二個字串連結再緩衝區的尾端:
+```c
+char* error = "ERROR: ";
+char* errorMessage = "Not enough memory";
+
+// malloc函數的參數加上1以放置NUL
+char* buffer = (char*)malloc(strlen(error)+strlen(errorMessage)+1);
+strcpy(buffer,error);
+strcat(buffer, errorMessage);
+
+printf("%s\n", buffer);
+printf("%s\n", error);
+printf("%s\n", errorMessage);
+```
+
+輸出結果:
+```shell
+ERROR: Not enough memory
+ERROR:
+Not enough memory
+```
+
+![Figure 5-9](./Fig/Figure5-9.png)
