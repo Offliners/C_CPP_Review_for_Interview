@@ -85,3 +85,50 @@ printf("%d\n",sizeof(AlternatePerson));  // 顯示16
 假設使用以下的方式建立AlternatePerson的陣列，陣列元素間就會有邊界調整的空隙。圖中陰影的部分就是陣列元素間的空隙。
 
 ![Figure 6-1](./Fig/Figure6-1.png)
+
+### 釋放結構的問題
+配置結構的記憶體時，執行期系統並不會自動配置結構內部指標所需的記憶體，同樣地，釋放結構記憶體時，執行期系統也不會自動釋放指派給結構中指標的記憶體。
+```c
+typedef struct _person {
+    char* firstName;
+    char* lastName;
+    char* title;
+    uint age;
+} Person;
+```
+
+當宣告這類型的變數，或是動態配置這類型的記憶體時，結構中的三個指標只是沒有意義的資料，然而，若是宣告為static變數，那麼結構成員就會被初始化為0 (指標則是初始化為NULL)。在以下的程式中，宣告了Person，記憶體配置如下圖，其中的三個點表示未初始化記憶體:
+```c
+void processPerson() {
+    Person person;
+        ...
+}
+```
+
+![Figure 6-2](./Fig/Figure6-2.png)
+
+在初始化結構時，必須指派給每個欄位的數值，結構中的指標欄位必須先從堆積配置記憶體，在指派各個指標:
+```c
+void initializePerson(Person *person, const char* fn, const char* ln, const char* title, uint age) {
+    person->firstName = (char*) malloc(strlen(fn) + 1);
+    strcpy(person->firstName, fn);
+    person->lastName = (char*) malloc(strlen(ln) + 1);
+    strcpy(person->lastName, ln);
+    person->title = (char*) malloc(strlen(title) + 1);
+    strcpy(person->title, title);
+    person->age = age;
+}
+```
+
+可以用以下方是使用這個函數:
+```c
+void processPerson() {
+    Person person;
+    initializePerson(&person, "Peter", "Underwood", "Manager", 36);
+        ...
+}
+int main() {
+    processPerson();
+        ...
+}
+```
