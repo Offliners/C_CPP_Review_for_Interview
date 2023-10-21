@@ -343,3 +343,41 @@ currentPath = strcat(currentPath,"\\");
 ```c
 currentPath = strcat(path,'\\');
 ```
+
+### 傳入字串
+根據字串宣告方式不同，將字串位址傳入函數也有幾種不同的方式。
+
+
+下述範例，函數中利用小括號強制讓後遞增運算子先執行，移動指標的位置。由於後遞增運算子得的優權比解參考運算子還高，小括號並非絕對必要，但加上小括號能更明確的表明程式設計師的意圖。
+```c
+size_t stringLength(char* string) {
+    size_t length = 0;
+    while(*(string++)) {
+        length++;
+    }
+    return length;
+}
+```
+
+※ 字串實際上應該以常數字元指標的類型傳入。
+
+先從以下的宣告開始:
+```c
+char simpleArray[] = "simple string";
+char *simplePtr = (char*)malloc(strlen("simple string")+1);
+strcpy(simplePtr, "simple string");
+```
+
+呼叫以指標為參述的函數時，只需要使用指標的名稱:
+```c
+printf("%d\n",stringLength(simplePtr));
+```
+
+以陣列呼叫時有三種選擇，第一個命令直接使用陣列名稱，會傳回陣列的位址；第二個命令明確地使用取指運算子，雖然程式可以執行，但實際傳入的是字元指標的指標而非字元指標，這會產生警告訊息；第三種作法對陣列的第一個元素使用取址運算子，雖然符合預期行為，但太過繁瑣:
+```c
+printf("%d\n",stringLength(simpleArray));
+printf("%d\n",stringLength(&simpleArray));
+printf("%d\n",stringLength(&simpleArray[0]));
+```
+
+![Figure 5-12](./Fig/Figure5-12.png)
