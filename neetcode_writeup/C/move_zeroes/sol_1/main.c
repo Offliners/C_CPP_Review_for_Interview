@@ -35,4 +35,8 @@ int main()
     for(int i = 0; i < len - 1; ++i)
         printf("%d ", nums[i]);
     printf("%d\n", nums[len - 1]);
+
+    free(nums);
+
+    return 0;
 }

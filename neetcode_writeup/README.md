@@ -2,7 +2,7 @@
 Detail: [Link](https://neetcode.io/)
 
 ## Outline
-|#|Problem|Difficulty|C|Cpp|
+|#|Problem|Difficulty|C|C++|
 |-|-|-|-|-|
 |1|Contains Duplicate|Easy||[link](./Cpp/contains_duplicate/contains_duplicate.md)|
 |2|Valid Anagram|Easy||[link](./Cpp/valid_anagram/valid_anagram.md)|
@@ -25,7 +25,7 @@ Detail: [Link](https://neetcode.io/)
 |112|Search Insert Position|Easy||[link](./Cpp/search_insert_position/search_insert_position.md)|
 |122|Search a 2D Matrix|Medium||[link](./Cpp/search_a_2d_matrix/search_a_2d_matrix.md)|
 |129|Find First and Last Position of Element in Sorted Array|Medium||[link](./Cpp/find_first_and_last_position_of_element_in_sorted_array/find_first_and_last_position_of_element_in_sorted_array.md)|
-|135|Reverse Linked List|Easy||[link](./Cpp/reverse_linked_list/reverse_linked_list.md)|
+|135|Reverse Linked List|Easy|[link](./C/reverse_linked_list/reverse_linked_list.md)|[link](./Cpp/reverse_linked_list/reverse_linked_list.md)|
 |136|Merge Two Sorted Lists|Easy||[link](./Cpp/merge_two_sorted_lists/merge_two_sorted_lists.md)|
 |150|Add Two Numbers|Medium||[link](./Cpp/add_two_numbers/add_two_numbers.md)|
 |151|Linked List Cycle|Easy||[link](./Cpp/linked_list_cycle/linked_list_cycle.md)|

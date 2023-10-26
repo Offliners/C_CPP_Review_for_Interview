@@ -22,6 +22,6 @@ Detail: [Link](https://leetcode.com/problem-list/top-100-liked-questions/)
 |136|Single Number|Easy||[link](./Cpp/single_number/single_number.md)|
 |141|Linked List Cycle|Easy||[link](./Cpp/linked_list_cycle/linked_list_cycle.md)|
 |142|Linked List Cycle II|Medium||[link](./Cpp/linked_list_cycle_II/linked_list_cycle_II.md)|
-|206|Reverse Linked List|Easy||[link](./Cpp/reverse_linked_list/reverse_linked_list.md)|
+|206|Reverse Linked List|Easy|[link](./C/reverse_linked_list/reverse_linked_list.md)|[link](./Cpp/reverse_linked_list/reverse_linked_list.md)|
 |283|Move Zeroes|Easy|[link](./C/move_zeroes/move_zeroes.md)|[link](./Cpp/move_zeroes/move_zeroes.md)|
 |704|Binary Search|Easy|[link](./C/binary_search/binary_search.md)|[link](./Cpp/binary_search/binary_search.md)|
