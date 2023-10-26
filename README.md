@@ -18,6 +18,7 @@
 * Neetcode: [link](https://neetcode.io/)
 * Leetcode: [link](https://leetcode.com/)
 * Mr. Opengate: [link](https://www.mropengate.com/)
+* 你所不知道的C語言: [link](https://hackmd.io/@sysprog/c-prog/%2F%40sysprog%2Fc-programming)
 
 #### Textbooks
 * Understanding and Using C Pointers (ISBN: `1449344186`)
