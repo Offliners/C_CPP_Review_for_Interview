@@ -35,5 +35,6 @@ Detail: [Link](https://neetcode.io/)
 |295|Climbing Stairs|Easy||[link](./Cpp/climbing_stairs/climbing_stairs.md)|
 |356|Maximum Subarray|Medium||[link](./Cpp/maximum_subarray/maximum_subarray.md)|
 |386|Rotate Image|Medium||[link](./Cpp/rotate_image/rotate_image.md)|
+|392|Palindrome Number|Easy||[link](./Cpp/palindrome_number/palindrome_number.md)|
 |395|Roman to Integer|Easy||[link](./Cpp/roman_to_integer/roman_to_integer.md)|
 |403|Single Number|Easy||[link](./Cpp/single_number/single_number.md)|
