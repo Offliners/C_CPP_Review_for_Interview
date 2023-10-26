@@ -18,7 +18,7 @@ Detail: [Link](https://neetcode.io/)
 |52|Sign of the Product of an Array|Easy||[link](./Cpp/sign_of_the_product_of_an_array/sign_of_the_product_of_an_array.md)|
 |64|Reverse String|Easy||[link](./Cpp/reverse_string/reverse_string.md)
 |66|Move Zeroes|Easy||[link](./Cpp/move_zeroes/move_zeroes.md)|
-|67|Remove Duplicates from Sorted Array|Easy||[link](./Cpp/remove_duplicates_from_sorted_array/remove_duplicates_from_sorted_array.md)|
+|67|Remove Duplicates from Sorted Array|Easy|[link](./C/move_zeroes/move_zeroes.md)|[link](./Cpp/remove_duplicates_from_sorted_array/remove_duplicates_from_sorted_array.md)|
 |78|Best Time to Buy and Sell Stock|Easy||[link](./Cpp/best_time_to_buy_and_sell_stock/best_time_to_buy_and_sell_stock.md)|
 |92|Valid Parentheses|Easy||[link](./Cpp/valid_parentheses/valid_parentheses.md)|
 |111|Binary Search|Easy|[link](./C/binary_search/binary_search.md)|[link](./Cpp/binary_search/binary_search.md)|
