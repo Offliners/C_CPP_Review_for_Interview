@@ -21,7 +21,7 @@ Detail: [Link](https://neetcode.io/)
 |67|Remove Duplicates from Sorted Array|Easy||[link](./Cpp/remove_duplicates_from_sorted_array/remove_duplicates_from_sorted_array.md)|
 |78|Best Time to Buy and Sell Stock|Easy||[link](./Cpp/best_time_to_buy_and_sell_stock/best_time_to_buy_and_sell_stock.md)|
 |92|Valid Parentheses|Easy||[link](./Cpp/valid_parentheses/valid_parentheses.md)|
-|111|Binary Search|Easy||[link](./Cpp/binary_search/binary_search.md)|
+|111|Binary Search|Easy|[link](./C/binary_search/binary_search.md)|[link](./Cpp/binary_search/binary_search.md)|
 |112|Search Insert Position|Easy||[link](./Cpp/search_insert_position/search_insert_position.md)|
 |122|Search a 2D Matrix|Medium||[link](./Cpp/search_a_2d_matrix/search_a_2d_matrix.md)|
 |129|Find First and Last Position of Element in Sorted Array|Medium||[link](./Cpp/find_first_and_last_position_of_element_in_sorted_array/find_first_and_last_position_of_element_in_sorted_array.md)|
