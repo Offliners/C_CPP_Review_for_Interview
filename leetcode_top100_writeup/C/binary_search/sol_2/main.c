@@ -30,13 +30,11 @@ int main(void)
 
     int *nums = (int*)malloc(len * sizeof(int));
     for(int i = 0; i < len; ++i)
-    {
-        int num;
         temp = scanf("%d", &num);
-        nums[i] = num;
-    }
 
     printf("%d\n", search(nums, len, target));
+
+    free(nums);
 
     return 0;
 }
