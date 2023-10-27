@@ -6,67 +6,50 @@ using namespace std;
 class Solution {
 public:
     vector<int> sortArray(vector<int>& nums) {
-        mergeSort(nums, 0, nums.size() - 1); 
+        nums.insert(nums.begin(), 0);
+        BuildMaxHeap(nums);
+
+        int size = nums.size() - 1;
+        for(int i = nums.size() - 1; i >= 2; --i)
+        {
+            int temp = nums[1];
+            nums[1] = nums[i];
+            nums[i] = temp;
+            --size;
+            MaxHeapify(nums, 1, size);
+        }
+
+        nums.erase(nums.begin()); 
 
         return nums;
     }
 
-    void merge(vector<int>& nums, int const left, int const mid, int const right)
-    {
-        int const subArrayOne = mid - left + 1;
-        int const subArrayTwo = right - mid;
- 
-        vector<int> leftArray(subArrayOne);
-        vector<int> rightArray(subArrayTwo);
+    void MaxHeapify(vector<int>& nums, int root, int length){
+        int left = 2 * root;
+        int right = 2 * root + 1;
+        int largest;
 
-        for(int i = 0; i < subArrayOne; ++i)
-            leftArray[i] = nums[left + i];
-            
-        for(int j = 0; j < subArrayTwo; ++j)
-            rightArray[j] = nums[mid + 1 + j];
-    
-        auto indexOfSubArrayOne = 0, indexOfSubArrayTwo = 0;
-        int indexOfMergedArray = left;
-    
-        while(indexOfSubArrayOne < subArrayOne && indexOfSubArrayTwo < subArrayTwo)
+        if(left <= length && nums[left] > nums[root])
+            largest = left;
+        else
+            largest = root;
+
+        if(right <= length && nums[right] > nums[largest])
+            largest = right;
+
+        if(largest != root)
         {
-            if (leftArray[indexOfSubArrayOne] <= rightArray[indexOfSubArrayTwo])
-            {
-                nums[indexOfMergedArray] = leftArray[indexOfSubArrayOne];
-                ++indexOfSubArrayOne;
-            }
-            else
-            {
-                nums[indexOfMergedArray] = rightArray[indexOfSubArrayTwo];
-                ++indexOfSubArrayTwo;
-            }
-            ++indexOfMergedArray;
-        }
-    
-        while(indexOfSubArrayOne < subArrayOne)
-        {
-            nums[indexOfMergedArray] = leftArray[indexOfSubArrayOne];
-            ++indexOfSubArrayOne;
-            ++indexOfMergedArray;
-        }
-    
-        while(indexOfSubArrayTwo < subArrayTwo)
-        {
-            nums[indexOfMergedArray] = rightArray[indexOfSubArrayTwo];
-            ++indexOfSubArrayTwo;
-            ++indexOfMergedArray;
+            int temp = nums[largest];
+            nums[largest] = nums[root];
+            nums[root] = temp;
+            MaxHeapify(nums, largest, length);
         }
     }
-    
-    void mergeSort(vector<int>& nums, int const begin, int const end)
+
+    void BuildMaxHeap(vector<int> &nums)
     {
-        if (begin >= end)
-            return;
-    
-        int mid = begin + (end - begin) / 2;
-        mergeSort(nums, begin, mid);
-        mergeSort(nums, mid + 1, end);
-        merge(nums, begin, mid, end);
+        for(int i = nums.size() / 2; i >= 1 ; i--)
+            MaxHeapify(nums, i, nums.size() - 1);
     }
 };
 

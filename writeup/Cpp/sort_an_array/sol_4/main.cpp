@@ -6,51 +6,46 @@ using namespace std;
 class Solution {
 public:
     vector<int> sortArray(vector<int>& nums) {
-        nums.insert(nums.begin(), 0);
-        BuildMaxHeap(nums);
-
-        int size = nums.size() - 1;
-        for(int i = nums.size() - 1; i >= 2; --i)
-        {
-            int temp = nums[1];
-            nums[1] = nums[i];
-            nums[i] = temp;
-            --size;
-            MaxHeapify(nums, 1, size);
-        }
-
-        nums.erase(nums.begin()); 
+        quick_sort(nums, 0, nums.size() - 1);
 
         return nums;
     }
 
-    void MaxHeapify(vector<int>& nums, int root, int length){
-        int left = 2 * root;
-        int right = 2 * root + 1;
-        int largest;
-
-        if(left <= length && nums[left] > nums[root])
-            largest = left;
-        else
-            largest = root;
-
-        if(right <= length && nums[right] > nums[largest])
-            largest = right;
-
-        if(largest != root)
+    void quick_sort(vector<int>& nums, int front, int end) {
+        if(front < end)
         {
-            int temp = nums[largest];
-            nums[largest] = nums[root];
-            nums[root] = temp;
-            MaxHeapify(nums, largest, length);
+            int pivot = partition(nums, front, end);
+            quick_sort(nums, front, pivot - 1);
+            quick_sort(nums, pivot + 1, end);
         }
     }
 
-    void BuildMaxHeap(vector<int> &nums)
-    {
-        for(int i = nums.size() / 2; i >= 1 ; i--)
-            MaxHeapify(nums, i, nums.size() - 1);
+    int partition(vector<int>& nums, int front, int end) {
+        int pivot = nums[end];
+        int i = front - 1;
+
+        for(int j = front; j < end; ++j)
+        {
+            if(nums[j] < pivot)
+            {
+                ++i;
+                swap(nums[i], nums[j]);
+            }
+        }
+
+        ++i;
+        swap(nums[i], nums[end]);
+
+        return i;
     }
+
+    void swap(int &a, int &b)
+    {
+        int temp = a;
+        a = b;
+        b = temp;
+    }
+
 };
 
 int main(void)
