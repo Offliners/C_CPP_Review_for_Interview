@@ -38,4 +38,4 @@ Detail: [Link](https://neetcode.io/)
 |392|Palindrome Number|Easy||[link](./Cpp/palindrome_number/palindrome_number.md)|
 |395|Roman to Integer|Easy||[link](./Cpp/roman_to_integer/roman_to_integer.md)|
 |403|Single Number|Easy||[link](./Cpp/single_number/single_number.md)|
-|411|Reverse Integer|Medium||[link](./Cpp/reverse_integer/reverse_integer.md)|
+|411|Reverse Integer|Medium|[link](./C/reverse_integer/reverse_integer.md)|[link](./Cpp/reverse_integer/reverse_integer.md)|
