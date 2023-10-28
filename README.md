@@ -12,8 +12,6 @@
 ### Writeup
 * [LeetCode 刷題](./writeup/README.md)
 
-[![Offliner's LeetCode stats](https://leetcode-stats-six.vercel.app/?username=offliner)](https://leetcode.com/)
-
 ## References
 #### Websites
 * Neetcode: [link](https://neetcode.io/)
