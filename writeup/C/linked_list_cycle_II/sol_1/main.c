@@ -35,7 +35,7 @@ struct ListNode *detectCycle(struct ListNode *head) {
         fast = fast->next;
     }
 
-    return  slow;
+    return slow;
 }
 
 int main(void)
