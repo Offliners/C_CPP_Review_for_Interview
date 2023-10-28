@@ -27,8 +27,10 @@ int main(void)
         nums.push_back(data);
 
     vector<int> ans = sol.getConcatenation(nums);
-    for(int i = 0; i < ans.size(); ++i)
-        cout << ans[i] << endl;
+    for(int i = 0; i < ans.size() - 1; ++i)
+        cout << ans[i] << " ";
+
+    cout << ans.back() << endl;
 
     return 0;
 }

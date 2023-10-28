@@ -15,14 +15,12 @@ def gen():
     test_cases = []
     for _ in range(nums_length):
         test_cases.append(random.randint(nums_lower, nums_upper))
-    
+
     return test_cases
 
 def sol(in_path, out_path):
     with open(in_path, 'r') as f:
-        nums = []
-        for line in f.readlines():
-            nums.append(int(line))
+        nums = list(map(int, f.readlines()[0].strip().split()))
         
         ans = []
         for i in range(2):
@@ -30,8 +28,8 @@ def sol(in_path, out_path):
                 ans.append(n)
         
     with open(out_path, 'w') as f:
-        for num in ans:
-            f.writelines(f'{num}\n')
+        num = [str(e) for e in ans]
+        f.writelines(f'{" ".join(num)}\n')
 
 if __name__ == '__main__':
     os.makedirs(cfg['save_path'], exist_ok=True)
@@ -40,8 +38,8 @@ if __name__ == '__main__':
     num_testcase = cfg['N']
     for i in range(num_testcase):
         with open(os.path.join(save_path, f'{i}.in'), 'w') as f:
-            cases = gen()
-            for case in cases:
-                f.writelines(f'{case}\n')
+            case = gen()
+            case = [str(e) for e in case]
+            f.writelines(f'{" ".join(case)}\n')
 
         sol(os.path.join(save_path, f'{i}.in'), os.path.join(save_path, f'{i}.out'))
