@@ -21,12 +21,9 @@ def gen():
 def sol(in_path, out_path):
     flag = False
     with open(in_path, 'r') as f:
-        nums = []
-        for line in f.readlines():
-            nums.append(int(line))
+        nums = list(map(int, f.readlines()[0].strip().split()))
         
         nums.sort()
-
         for i in range(len(nums) - 1):
             if nums[i] == nums[i+1]:
                 flag = True
@@ -45,8 +42,8 @@ if __name__ == '__main__':
     num_testcase = cfg['N']
     for i in range(num_testcase):
         with open(os.path.join(save_path, f'{i}.in'), 'w') as f:
-            cases = gen()
-            for case in cases:
-                f.writelines(f'{case}\n')
+            case = gen()
+            case = [str(e) for e in case]
+            f.writelines(f'{" ".join(case)}\n')
 
         sol(os.path.join(save_path, f'{i}.in'), os.path.join(save_path, f'{i}.out'))
