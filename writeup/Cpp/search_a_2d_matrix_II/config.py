@@ -7,19 +7,19 @@ cfg = {
 
     # Boundary of matrix.length
     'm_lower' : 1,
-    'm_upper' : 100,
+    'm_upper' : 300,
 
     # Boundary of matrix[i].length
     'n_lower' : 1,
-    'n_upper' : 100,
+    'n_upper' : 300,
 
     # Boundary of matrix[i][j]
-    'value_lower' : -1e4,
-    'value_upper' : 1e4,
+    'value_lower' : -1e9,
+    'value_upper' : 1e9,
 
     # Boundary of target
-    'target_lower' : -1e4,
-    'target_upper' : 1e4,
+    'target_lower' : -1e9,
+    'target_upper' : 1e9,
 
     # Probability of target occurance
     'prob_target' : 0.3,
