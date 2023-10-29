@@ -18,9 +18,19 @@ def gen():
     n = random.randint(n_lower, n_upper)
     target = random.randint(target_lower, target_upper)
 
-    data = random.sample(list(range(value_lower, target)) + list(range(target + 1, value_upper)), n * m)
+    data = []
     if random.random() < float(cfg['prob_target']):
-        data[-1] = target
+        data.append(target)
+
+    count = 0
+    while count <= n * m:
+        num = random.randint(value_lower, value_upper)
+
+        if num in data:
+            continue
+
+        count += 1
+        data.append(num)
     
     random.shuffle(data)
 
