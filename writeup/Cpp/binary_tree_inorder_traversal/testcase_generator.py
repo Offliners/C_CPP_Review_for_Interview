@@ -1,5 +1,6 @@
 import os
 import random
+import queue
 from config import cfg
 
 random.seed(cfg['seed'])
@@ -38,6 +39,7 @@ def sol(in_path, out_path):
 
     null_token = int(cfg['null_token'])
     if data[0] != null_token:
+        q = queue.Queue()
         root = TreeNode(val=data[0])
         cur = root
         i = 1
