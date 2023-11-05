@@ -76,7 +76,7 @@ def sol(in_path, out_path):
             i += 1
             if data[i] != null_token:
                 right_node = TreeNode(data[i])
-                cur.left = right_node
+                cur.right = right_node
                 q.put(right_node)
             
             cur = q.get()

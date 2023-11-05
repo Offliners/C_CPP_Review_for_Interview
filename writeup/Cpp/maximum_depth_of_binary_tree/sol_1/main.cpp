@@ -54,7 +54,7 @@ int main(void)
             if(data != NULLTOKEN)
             {
                 TreeNode *right_node = new TreeNode(data);
-                cur->left = right_node;
+                cur->right = right_node;
                 q.push(right_node);
             }
 
