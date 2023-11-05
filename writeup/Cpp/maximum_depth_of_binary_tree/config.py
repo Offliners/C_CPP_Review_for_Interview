@@ -5,13 +5,16 @@ cfg = {
     # Random seed
     'seed' : 0,
 
-    # length of nums
-    'nums_lower' : 1,
-    'nums_upper' : 1e5,
+    # length of nodes
+    'node_lower' : 0,
+    'node_upper' : 1e4,
 
-    # Boundary of nums[i]
-    'num_lower' : -1e4,
-    'num_upper' : 1e4,
+    # Boundary of vals
+    'val_lower' : -100,
+    'val_upper' : 100,
+
+    # Null token
+    'null_token' : -101,
 
     # testcase output path
     'save_path' : './testcase',
