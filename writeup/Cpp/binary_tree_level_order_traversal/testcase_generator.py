@@ -1,6 +1,7 @@
 import os
 import random
 import queue
+from collections import deque
 from config import cfg
 
 random.seed(cfg['seed'])
@@ -76,7 +77,7 @@ def sol(in_path, out_path):
             i += 1
             if data[i] != null_token:
                 right_node = TreeNode(data[i])
-                cur.left = right_node
+                cur.right = right_node
                 q.put(right_node)
             
             cur = q.get()
@@ -84,26 +85,30 @@ def sol(in_path, out_path):
     else:
         root = None
 
-    stack = [root]
-    visit = [False]
     res = []
+    q = deque()
+    if root:
+        q.append(root)
 
-    while stack:
-        cur, v = stack.pop(), visit.pop()
-        if cur:
-            if v:
-                res.append(cur.val)
-            else:
-                stack.append(cur)
-                visit.append(True)
-                stack.append(cur.right)
-                visit.append(False)
-                stack.append(cur.left)
-                visit.append(False)
-    
-    ans = [str(e) for e in res]
+    while q:
+        val = []
+
+        for i in range(len(q)):
+            node = q.popleft()
+            val.append(node.val)
+            if node.left:
+                q.append(node.left)
+            if node.right:
+                q.append(node.right)
+        res.append(val)
+
+    ans = []
+    for r in res:
+        r = [str(e) for e in r]
+        ans.append(r)
     with open(out_path, 'w') as f:
-        f.writelines(f'{" ".join(ans)}\n')
+        for a in ans:
+            f.writelines(f'{" ".join(a)}\n')
 
 if __name__ == '__main__':
     os.makedirs(cfg['save_path'], exist_ok=True)

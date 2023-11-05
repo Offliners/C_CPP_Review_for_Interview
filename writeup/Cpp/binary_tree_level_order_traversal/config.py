@@ -7,14 +7,14 @@ cfg = {
 
     # Number of nodes
     'node_lower' : 0,
-    'node_upper' : 100,
+    'node_upper' : 2000,
 
     # boundary of val
-    'val_lower' : -100,
-    'val_upper' : 100,
+    'val_lower' : -1000,
+    'val_upper' : 1000,
 
     # Null token
-    'null_token' : -101,
+    'null_token' : -1001,
 
     # testcase output path
     'save_path' : './testcase',
