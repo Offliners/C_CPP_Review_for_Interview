@@ -7,7 +7,7 @@ The diameter of a binary tree is the length of the longest path between any two 
 
 The length of a path between two nodes is represented by the number of edges between them.
 
-![inorder_1](./inorder_1.jpg)
+![diamtree](./diamtree.jpg)
 
 ### Solution 1 - Depth First Search
 * Time complexity: $O(n)$
