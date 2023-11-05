@@ -34,8 +34,8 @@ def generate_random_binary_tree(size, lower, upper):
 def flatten_tree(data, node, null_token, level=0): 
     if node is not None:
         data.append(node.val)
-        flatten_tree(data, node.right, null_token, level + 1) 
         flatten_tree(data, node.left, null_token, level + 1) 
+        flatten_tree(data, node.right, null_token, level + 1) 
     else:
         data.append(null_token)
 
