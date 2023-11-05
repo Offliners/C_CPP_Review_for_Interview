@@ -6,8 +6,8 @@ cfg = {
     'seed' : 0,
 
     # Number of nodes
-    'node_lower' : 0,
-    'node_upper' : 100,
+    'node_lower' : 1,
+    'node_upper' : 1e4,
 
     # boundary of val
     'val_lower' : -100,
