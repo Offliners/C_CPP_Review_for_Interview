@@ -1,5 +1,6 @@
 #include<iostream>
 #include<vector>
+#include<queue>
 #include<algorithm>
 
 #define NULLTOKEN -101
@@ -37,41 +38,36 @@ public:
 int main(void)
 {
     int data;
-    vector<int> num;
+    queue<TreeNode *> q;
 
-    while(cin >> data)
-        num.push_back(data);
-
-    int null_token = NULLTOKEN;
-    TreeNode *root = new TreeNode();
-    if(num.front() != null_token)
+    TreeNode *root, *cur;
+    cin >> data;
+    if(data != NULLTOKEN)
     {
-        root->val = num.front();
-        TreeNode *cur = root;
-        for(int i = 1; i < num.size(); ++i)
+        root = new TreeNode(data); 
+        cur = root;
+
+        while(cin >> data)
         {
-            TreeNode *left_node = new TreeNode(num[i]);
-            if(num[i] == null_token)
-                left_node = NULL;
+            if(data != NULLTOKEN)
+            {
+                TreeNode *left_node = new TreeNode(data);
+                cur->left = left_node;
+                q.push(left_node);
+            }
 
-            cur->left = left_node;
-
-            if(i + 1 > num.size() - 1)
+            if(!(cin >> data))
                 break;
 
-            ++i;
-            TreeNode *right_node = new TreeNode(num[i]);
-            if(num[i] == null_token)
-                right_node = NULL;
-            
-            cur->right = right_node;
+            if(data != NULLTOKEN)
+            {
+                TreeNode *right_node = new TreeNode(data);
+                cur->left = right_node;
+                q.push(right_node);
+            }
 
-            if(cur->left)
-                cur = cur->left;
-            else if(cur->right)
-                cur = cur->right;
-            else
-                break;
+            cur = q.front();
+            q.pop();
         }
     }
     else
