@@ -3,6 +3,8 @@ Neetcode: [Link](https://neetcode.io/)
 
 Leetcode Top100 Liked Questions: [Link](https://leetcode.com/problem-list/top-100-liked-questions/)
 
+※ All the following LeetCode problems have their own generated test data by myself.
+
 ## Outline
 | LeetCode # | Problem                                                                                                                                          | Difficulty | NeetCode | Top 100 Liked Questions | C                                                                                | C++                                                                                                                              |
 | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | -------- | ----------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
