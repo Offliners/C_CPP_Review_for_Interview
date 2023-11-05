@@ -16,9 +16,6 @@ cfg = {
     # Null token
     'null_token' : -101,
 
-    # Probability of null occurance
-    'prob_null' : 0.2, 
-
     # testcase output path
     'save_path' : './testcase',
 
