@@ -1,8 +1,43 @@
 import os
 import random
+import queue
 from config import cfg
 
 random.seed(cfg['seed'])
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+
+def generate_random_binary_tree(size, lower, upper): 
+    if size == 0: 
+        return None
+
+    left_size = random.randint(0, size - 1) 
+    right_size = size - 1 - left_size 
+
+    left_subtree = generate_random_binary_tree(left_size, lower, upper) 
+    right_subtree = generate_random_binary_tree(right_size, lower, upper) 
+
+    root = TreeNode(random.randint(lower, upper)) 
+
+    root.left = left_subtree 
+    root.right = right_subtree 
+
+    return root 
+
+
+def flatten_tree(data, node, null_token, level=0): 
+    if node is not None:
+        data.append(node.val)
+        flatten_tree(data, node.right, null_token, level + 1) 
+        flatten_tree(data, node.left, null_token, level + 1) 
+    else:
+        data.append(null_token)
+
 
 def gen():
     node_lower = int(cfg['node_lower'])
@@ -12,25 +47,12 @@ def gen():
 
     tree_length = random.randint(node_lower, node_upper)
 
-    tree = []
+    root = generate_random_binary_tree(tree_length, val_lower, val_upper)
+    test_case = []
+    flatten_tree(test_case, root, int(cfg['null_token']))
 
-    if tree_length == 0:
-        tree.append(int(cfg['null_token']))
-        return tree
+    return test_case
 
-    for i in range(tree_length):
-        if random.random() < float(cfg['prob_null']) and i != 0:
-            tree.append(int(cfg['null_token']))
-        else:
-            tree.append(random.randint(val_lower, val_upper))
-
-    return tree
-
-class TreeNode:
-    def __init__(self, val=0, left=None, right=None):
-        self.val = val
-        self.left = left
-        self.right = right
 
 def sol(in_path, out_path):
     with open(in_path, 'r') as f:
@@ -38,34 +60,27 @@ def sol(in_path, out_path):
 
     null_token = int(cfg['null_token'])
     if data[0] != null_token:
-        root = TreeNode(val=data[0])
+        q = queue.Queue()
+        root = TreeNode(data[0])
         cur = root
         i = 1
         while i < len(data):
-            left_node = TreeNode(data[i])
-
-            if data[i] == null_token:
-                left_node = None
-
-            cur.left = left_node
-            if i + 1 > len(data) - 1:           
+            if data[i] != null_token:
+                left_node = TreeNode(data[i])
+                cur.left = left_node
+                q.put(left_node)
+            
+            if i + 1 >= len(data) - 1:
                 break
 
             i += 1
-            right_node = TreeNode(data[i])
-
-            if data[i] == null_token:
-                right_node = None
-
-            cur.right = right_node
-
+            if data[i] != null_token:
+                right_node = TreeNode(data[i])
+                cur.left = right_node
+                q.put(right_node)
+            
+            cur = q.get()
             i += 1
-            if cur.left:
-                cur = cur.left
-            elif cur.right:
-                cur = cur.right
-            else:
-                break
     else:
         root = None
 
