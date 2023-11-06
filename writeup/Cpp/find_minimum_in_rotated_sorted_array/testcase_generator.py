@@ -1,0 +1,56 @@
+import os
+import random
+from config import cfg
+
+random.seed(cfg['seed'])
+
+def gen():
+    num_lower = int(cfg['num_lower'])
+    num_upper = int(cfg['num_upper'])
+    nums_lower = int(cfg['nums_lower'])
+    nums_upper = int(cfg['nums_upper'])
+
+    nums_length = random.randint(num_lower, num_upper)
+
+    test_cases = random.sample(list(range(nums_lower, nums_upper)), nums_length)
+    test_cases = sorted(test_cases)
+    k = random.randint(0, len(test_cases))
+
+    k = -k % len(test_cases)
+    test_cases = test_cases[k:] + test_cases[:k]
+
+    return test_cases
+
+def sol(in_path, out_path):
+    with open(in_path, 'r') as f:
+        nums = list(map(int, f.readlines()[0].strip().split()))
+        
+    start , end = 0, len(nums) - 1 
+    curr_min = float("inf")
+    while start  <  end :
+        mid = (start + end ) // 2
+        curr_min = min(curr_min,nums[mid])
+
+        if nums[mid] > nums[end]:
+            start = mid + 1
+
+        else:
+            end = mid - 1 
+
+    ans = min(curr_min,nums[start]) 
+        
+    with open(out_path, 'w') as f:
+        f.writelines(f'{ans}\n')
+
+if __name__ == '__main__':
+    os.makedirs(cfg['save_path'], exist_ok=True)
+    save_path = cfg['save_path']
+
+    num_testcase = cfg['N']
+    for i in range(num_testcase):
+        with open(os.path.join(save_path, f'{i}.in'), 'w') as f:
+            case = gen()
+            case = [str(e) for e in case]
+            f.writelines(f'{" ".join(case)}\n')
+
+        sol(os.path.join(save_path, f'{i}.in'), os.path.join(save_path, f'{i}.out'))
