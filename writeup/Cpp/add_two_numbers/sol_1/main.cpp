@@ -1,4 +1,6 @@
 #include<iostream>
+#include<string>
+#include<sstream>
 
 using namespace std;
 
@@ -47,32 +49,32 @@ public:
 
 int main(void)
 {
-    int data;
+    string data;
+
+    getline(cin, data);
     ListNode *l1 = new ListNode();
-    ListNode *val_1 = l1;
+    ListNode *cur = l1;
+    stringstream s1(data);
+    string nums;
+    while(getline(s1, nums, ' '))
+    {
+        ListNode *temp = new ListNode(stoi(nums));
+        cur->next = temp;
+        cur = cur->next;
+    }
+
+    getline(cin, data);
     ListNode *l2 = new ListNode();
-    ListNode *val_2 = l2;
+    cur = l2;
+    stringstream s2(data);
+    while(getline(s2, nums, ' '))
+    {
+        ListNode *temp = new ListNode(stoi(nums));
+        cur->next = temp;
+        cur = cur->next;
+    }
 
     Solution sol;
-
-    while(cin >> data)
-    {
-        if(data == -1)
-            break;
-
-        val_1->next = new ListNode(data);
-        val_1 = val_1->next;
-    }
-
-    while(cin >> data)
-    {
-        if(data == -1)
-            break;
-
-        val_2->next = new ListNode(data);
-        val_2 = val_2->next;
-    }
-
     ListNode *ans = sol.addTwoNumbers(l1->next, l2->next);
     while(ans->next != NULL)
     {

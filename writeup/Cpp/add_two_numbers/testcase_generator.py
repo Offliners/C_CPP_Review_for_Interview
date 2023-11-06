@@ -9,7 +9,6 @@ def gen():
     node_upper = int(cfg['node_upper'])
     value_lower = int(cfg['value_lower'])
     value_upper = int(cfg['value_upper'])
-    sep_token = int(cfg['split_token'])
 
     len_link_list_1 = random.randint(node_lower, node_upper)
     len_link_list_2 = random.randint(node_lower, node_upper)
@@ -24,7 +23,6 @@ def gen():
             link_list_1.append(random.randint(1, value_upper))
 
     test_case.append(link_list_1)
-    test_case.append([sep_token])
 
     link_list_2 = []
     for _ in range(len_link_list_2):
@@ -34,7 +32,6 @@ def gen():
             link_list_2.append(random.randint(1, value_upper))
 
     test_case.append(link_list_2)
-    test_case.append([sep_token])
 
     return test_case
 
@@ -48,31 +45,23 @@ def sol(in_path, out_path):
     with open(in_path, 'r') as f:
         data = f.readlines()
 
-    data_1 = data[0].split(' ')
-    data_1 = [int(e) for e in data_1] 
+    data_1 = [int(e) for e in data[0].split(' ')] 
+    l1 = ListNode(0)
+    cur = l1
+    for i in data_1:
+        cur.next = ListNode(i)
+        cur = cur.next
 
-    i = 0
-    l1 = ListNode()
-    val_1 = l1
-    for i in range(len(data_1) - 1):
-        val_1.val = data_1[i]
-        val_1.next = ListNode()
-        val_1 = val_1.next
-    
-    val_1.val = data_1[-1]
+    l1 = l1.next
 
-    data_2 = data[2].split(' ')
-    data_2 = [int(e) for e in data_2] 
+    data_2 = [int(e) for e in data[1].split(' ')] 
+    l2 = ListNode(0)
+    cur = l2
+    for i in data_2:
+        cur.next = ListNode(i)
+        cur = cur.next
 
-    i = 0
-    l2 = ListNode()
-    val_2 = l2
-    for i in range(len(data_2) - 1):
-        val_2.val = data_2[i]
-        val_2.next = ListNode()
-        val_2 = val_2.next
-    
-    val_2.val = data_2[-1]
+    l2 = l2.next
     
     dummy = ListNode()
     cur = dummy
