@@ -78,9 +78,9 @@ def sol(in_path, out_path):
 
     with open(out_path, 'w') as f:
         if not find_cycle:
-            f.writelines(f'no cycle\n')
+            f.writelines('no cycle\n')
         else:
-            f.writelines(f'tail connects to node index {count}\n')
+            f.writelines('tail connects to node index {count}\n')
 
 if __name__ == '__main__':
     os.makedirs(cfg['save_path'], exist_ok=True)

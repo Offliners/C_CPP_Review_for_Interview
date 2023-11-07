@@ -11,17 +11,11 @@ def gen():
     value_upper = int(cfg['value_upper'])
 
     link_list_len = random.randint(node_lower, node_upper)
-    if random.random() < float(cfg['prob_cycle']):
-        pos = random.randint(0, link_list_len - 2)
-    else:
-        pos = -1
 
-    test_case = [[pos]]
-    data = []
+    test_case = []
     for _ in range(link_list_len):
-        data.append(random.randint(value_lower, value_upper))
+        test_case.append(random.randint(value_lower, value_upper))
 
-    test_case.append(data)
     return test_case
 
 class ListNode:
@@ -34,38 +28,33 @@ def sol(in_path, out_path):
     with open(in_path, 'r') as f:
         data = f.readlines()
 
-    pos = int(data[0].strip())
-    data = list(map(int, data[1].strip().split()))
-
+    data = list(map(int, data[0].strip().split()))
+    
     head = ListNode(0)
-    temp = head
-    cycle_exist = False
-    for i in range(len(data)):
-        temp.next = ListNode(data[i])
+    if len(data) > 1:
+        cur = head
+        for n in data:
+            cur.next = ListNode(n)
+            cur = cur.next
+    else:
+        head.next = None
 
-        if i == pos:
-            node = temp.next
-            cycle_exist = True
-        
-        temp = temp.next
+    head = head.next
+    if not head or not head.next:
+        return head
+    else:
+        slow = fast = head
+        while fast and fast.next:
+            slow, fast = slow.next, fast.next.next
 
-    if cycle_exist:
-        temp.next = node
-
-    find_cycle = False
-    slow, fast = head, head
-    while fast and fast.next:
+    ans = []
+    while slow:
+        ans.append(slow.val)
         slow = slow.next
-        fast = fast.next.next
-        if slow == fast:
-            find_cycle = True
-            break
 
     with open(out_path, 'w') as f:
-        if find_cycle:
-            f.writelines('true\n')
-        else:
-            f.writelines('false\n')
+        ans = [str(e) for e in ans]
+        f.writelines(f'{" ".join(ans)}\n')
 
 if __name__ == '__main__':
     os.makedirs(cfg['save_path'], exist_ok=True)
