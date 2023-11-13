@@ -12,6 +12,9 @@
 ### Writeup
 * [LeetCode 刷題](./writeup/README.md)
 
+### 考古題
+* [考古題](./past_exam/README.md)
+
 ## References
 #### Websites
 * Neetcode: [link](https://neetcode.io/)
