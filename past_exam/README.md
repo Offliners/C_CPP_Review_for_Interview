@@ -98,7 +98,7 @@ int main(void)
 #include<stdio.h>
 #include<stdlib.h>
 
-int is_2_power(unsigned int x)
+int calc_number_1(unsigned int x)
 {
     int count = 0;
     
@@ -108,7 +108,12 @@ int is_2_power(unsigned int x)
         ++count;
     }
     
-    return count == 1;
+    return count;
+}
+
+int is_2_power(unsigned int x)
+{   
+    return calc_number_1(x) == 1;
 }
 
 int main(void)
@@ -149,6 +154,44 @@ int main(void)
     
     unsigned int b = 0x0080;              // 0000 0000 1000 0000
     printf("%d\n", get_highest_bit(b));   // 7
+
+    return 0;
+}
+```
+
+### 取數值中最低位元的位置
+```c
+#include<stdio.h>
+#include<stdlib.h>
+
+int get_highest_bit(unsigned int x)
+{
+    unsigned int test = 0xFFFF;
+    int count = 15; // number of test bit - 1
+    
+    while(((x & test) >> count) != 1)
+    {
+        test >>= 1;
+        --count;
+    }
+    
+    return count;
+}
+
+int get_lowest_bit(unsigned int x)
+{
+    x &= (-x);
+    
+    return get_highest_bit(x);
+}
+
+int main(void)
+{
+    unsigned int a = 0x7A9B;             // 0111 1010 1001 1011
+    printf("%d\n", get_lowest_bit(a));   // 0
+    
+    unsigned int b = 0x0080;             // 0000 0000 1000 0000
+    printf("%d\n", get_lowest_bit(b));   // 7
 
     return 0;
 }
