@@ -122,3 +122,34 @@ int main(void)
     return 0;
 }
 ```
+
+### 取數值中最高位元的位置
+```c
+#include<stdio.h>
+#include<stdlib.h>
+
+int get_highest_bit(unsigned int x)
+{
+    unsigned int test = 0xFFFF;
+    int count = 15; // number of test bit - 1
+    
+    while(((x & test) >> count) != 1)
+    {
+        test >>= 1;
+        --count;
+    }
+    
+    return count;
+}
+
+int main(void)
+{
+    unsigned int a = 0x7A9B;              // 0111 1010 1001 1011
+    printf("%d\n", get_highest_bit(a));   // 14
+    
+    unsigned int b = 0x0080;              // 0000 0000 1000 0000
+    printf("%d\n", get_highest_bit(b));   // 7
+
+    return 0;
+}
+```
