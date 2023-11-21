@@ -181,7 +181,6 @@ int get_highest_bit(unsigned int x)
 int get_lowest_bit(unsigned int x)
 {
     x &= (-x);
-    
     return get_highest_bit(x);
 }
 
