@@ -86,8 +86,38 @@ int main(void)
     unsigned int a = 0xFFFF;            // 1111 1111 1111 1111
     printf("%d\n", calc_number_1(a));   // 16
     
-    unsigned int b = 0x8888;
+    unsigned int b = 0x8888;            // 1000 1000 1000 1000
     printf("%d\n", calc_number_1(b));   // 4
+
+    return 0;
+}
+```
+
+### 判斷數值是否為2的n次方數
+```c
+#include<stdio.h>
+#include<stdlib.h>
+
+int is_2_power(unsigned int x)
+{
+    int count = 0;
+    
+    while(x)
+    {
+        x &= (x - 1);
+        ++count;
+    }
+    
+    return count == 1;
+}
+
+int main(void)
+{
+    unsigned int a = 256;
+    printf("%d\n", is_2_power(a));   // 1: true
+    
+    unsigned int b = 123;
+    printf("%d\n", is_2_power(b));   // 0: false
 
     return 0;
 }
