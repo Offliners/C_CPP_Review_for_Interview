@@ -5,15 +5,13 @@
 * [C - 指標](./C_pointer/README.md)
 * [C - 資料結構](./C_data_structure/README.md)
 * [常見 C 語言觀念題目總整理](./C_note/README.md)
+* [常見的 Bit Operation](./C_bit_operation/README.md)
 
 ### C++
 * [C++ - 演算法](./CPP_algorithms/README.md)
 
 ### Writeup
 * [LeetCode 刷題](./writeup/README.md)
-
-### 考古題
-* [考古題](./past_exam/README.md)
 
 ## References
 #### Websites
