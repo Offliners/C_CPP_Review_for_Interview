@@ -1,5 +1,5 @@
 # Number of 1 Bits
-Detail : [link](https://leetcode.com/problems/palindrome-linked-list/)
+Detail : [link](https://leetcode.com/problems/number-of-1-bits/)
 
 Given the `head` of a singly linked list, return `true` if it is a palindrome or `false` otherwise.
 
